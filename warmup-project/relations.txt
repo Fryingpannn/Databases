@@ -1,0 +1,8 @@
+/*
+2. Convert E/R diagram to at least five relations:
+[Person, Public Health Worker, Vaccination, Vaccination Facility, Group Age]
+*/
+
+CREATE TABLE Person (
+    firstName VARCHAR(30)
+);
