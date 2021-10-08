@@ -1,8 +1,90 @@
 /*
-2. Convert E/R diagram to at least five relations:
-[Person, Public Health Worker, Vaccination, Vaccination Facility, Group Age]
-*/
+Incomplete
+/*
 
+
+- pid primary key (?)
+*/
 CREATE TABLE Person (
-    firstName VARCHAR(30)
+	pid INTEGER PRIMARY KEY,
+    firstName VARCHAR(30),
+    lastName VARCHAR(30),
+    dateOfBirth DATE,
+    phoneNumber CHAR(15),
+    address VARCHAR(255),
+    city VARCHAR(30),
+    province VARCHAR(30),
+    postalCode CHAR(15),
+    citizenship VARCHAR(20),
+    email VARCHAR(255)
+);
+
+/*
+Relationship table to get infection date of a person
+*/
+CREATE TABLE InfectedBy (
+	dateOfInfection DATE,
+	pid INTEGER,
+	PRIMARY KEY (dateOfInfection, pid),
+	FOREIGN KEY (pid) REFERENCES Person (pid),
+	FOREIGN KEY (dateOfInfection) REFERENCES Infection (dateOfInfection)
+);
+
+CREATE TABLE Infection (
+	dateOfInfection PRIMARY KEY
+);
+
+CREATE TABLE AgeGroup (
+	groupNumber INTEGER PRIMARY KEY,
+	minAge INTEGER,
+	maxAge INTEGER
+);
+
+/*
+BelongsTo relationship table: one-to-many from AgeGroup to Person
+*/
+CREATE TABLE AgeBelonging (
+	pid PRIMARY KEY,
+	groupNumber,
+	FOREIGN KEY (pid) Person (pid),
+	FOREIGN KEY (groupNumber) AgeGroup (groupNumber)
+);
+
+/*
+is-a Person (registered/unregistered)
+*/
+CREATE TABLE PublicHealthWorker (
+	pid PRIMARY KEY,
+	/* other attributes of public health worker, start/end date?*/
+	FOREIGN KEY (pid) REFERENCES Person (pid)
+);
+
+CREATE TABLE Vaccine (
+	type VARCHAR(30) PRIMARY KEY,
+	status CHAR(9),
+	dateOfApproval DATE
+);
+
+CREATE TABLE VaccineRecord (
+	nurseID INTEGER,
+	location VARCHAR(30),
+	country VARCHAR(30),
+	vaccineDate DATE,
+	doseNumber INTEGER,
+	vaccineType VARCHAR(30),
+	vaccineID INTEGER,
+	PRIMARY KEY (nurseID, vaccineID)
+);
+
+/*
+Relationship table Nurse and Vaccine
+*/
+CREATE TABLE Administers (
+	vaccineDate DATE PRIMARY KEY,
+	type VARCHAR(30),
+	/*
+	One-to-many from nurse to vaccine:
+	- need nurse primary key
+	*/
+	FOREIGN KEY (type) REFERENCES Vaccine (type)
 );
