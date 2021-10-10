@@ -7,7 +7,7 @@ test test commit
 - pid primary key (?)
 */
 CREATE TABLE Person (
-	pid INTEGER PRIMARY KEY,
+	  pid INTEGER PRIMARY KEY,
     firstName VARCHAR(30),
     lastName VARCHAR(30),
     dateOfBirth DATE,
@@ -97,7 +97,9 @@ CREATE TABLE VaccineRecord (
 	doseNumber INTEGER,
 	vaccineType VARCHAR(30),
 	lotNumber INTEGER,
-	PRIMARY KEY (nurseID, lotNumber)
+	PRIMARY KEY (pid, nurseID),
+	FOREIGN KEY (pid) REFERENCES Person(pid)
+	FOREIGN KEY (nurseID) REFERENCES PublicHealthWorker(pid)
 );
 
 /*
