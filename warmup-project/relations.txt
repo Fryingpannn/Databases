@@ -1,5 +1,6 @@
 /*
 Incomplete
+test test commit
 /*
 
 
@@ -19,6 +20,21 @@ CREATE TABLE Person (
     email VARCHAR(255)
 );
 
+CREATE TABLE unregisteredPerson (
+	pid INTEGER PRIMARY KEY,
+	PassportNumber INTEGER NOT NULL,
+	FOREIGN KEY (pid) REFERENCES Person(pid)
+);
+
+CREATE TABLE registeredPerson(
+	pid INTEGER PRIMARY KEY,
+	medicareNumber INTEGER,
+	medicareDateOfIssue DATE,
+	medicareDAteOfExpiry DATE,
+	FOREIGN KEY (pid) REFERENCES Person(pid)
+);
+
+
 /*
 Relationship table to get infection date of a person
 */
@@ -30,8 +46,10 @@ CREATE TABLE InfectedBy (
 	FOREIGN KEY (dateOfInfection) REFERENCES Infection (dateOfInfection)
 );
 
-CREATE TABLE Infection (
-	dateOfInfection PRIMARY KEY
+CREATE TABLE InfectionHistory (
+	pid INTEGER PRIMARY KEY,
+  dateOfInfection DATE,
+	FOREIGN KEY (pid) REFERENCES Person(pid)
 );
 
 CREATE TABLE AgeGroup (
@@ -44,7 +62,7 @@ CREATE TABLE AgeGroup (
 BelongsTo relationship table: one-to-many from AgeGroup to Person
 */
 CREATE TABLE AgeBelonging (
-	pid PRIMARY KEY,
+	pid INTEGER PRIMARY KEY,
 	groupNumber,
 	FOREIGN KEY (pid) Person (pid),
 	FOREIGN KEY (groupNumber) AgeGroup (groupNumber)
@@ -54,26 +72,32 @@ CREATE TABLE AgeBelonging (
 is-a Person (registered/unregistered)
 */
 CREATE TABLE PublicHealthWorker (
-	pid PRIMARY KEY,
-	/* other attributes of public health worker, start/end date?*/
+	pid INTEGER PRIMARY KEY,
+	startDate DATE,
+	endDate DATE,
+	facilityID INTEGER PRIMARY KEY,
+	/* other attributes of public health worker, start/end date?
+	including where dates of the facilities where they work*/
 	FOREIGN KEY (pid) REFERENCES Person (pid)
 );
 
 CREATE TABLE Vaccine (
 	type VARCHAR(30) PRIMARY KEY,
 	status CHAR(9),
-	dateOfApproval DATE
+	dateOfApproval DATE,
+	dateOfSuspension DATE
 );
 
 CREATE TABLE VaccineRecord (
 	nurseID INTEGER,
+	pid INTEGER,
 	location VARCHAR(30),
 	country VARCHAR(30),
 	vaccineDate DATE,
 	doseNumber INTEGER,
 	vaccineType VARCHAR(30),
-	vaccineID INTEGER,
-	PRIMARY KEY (nurseID, vaccineID)
+	lotNumber INTEGER,
+	PRIMARY KEY (nurseID, lotNumber)
 );
 
 /*
@@ -82,9 +106,20 @@ Relationship table Nurse and Vaccine
 CREATE TABLE Administers (
 	vaccineDate DATE PRIMARY KEY,
 	type VARCHAR(30),
+	Person
 	/*
 	One-to-many from nurse to vaccine:
 	- need nurse primary key
 	*/
 	FOREIGN KEY (type) REFERENCES Vaccine (type)
+);
+
+CREATE TABLE VaccinationFacility (
+	facilityID INTEGER PRIMARY KEY,
+	capacity INTEGER,
+	name VARCHAR(80),
+	address VARCHAR(255),
+	phoneNumber INTEGER,
+	type VARCHAR(80),
+	webAddress VARCHAR(80)
 );
