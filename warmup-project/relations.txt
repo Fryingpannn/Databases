@@ -28,9 +28,9 @@ CREATE TABLE unregisteredPerson (
 
 CREATE TABLE registeredPerson(
 	pid INTEGER PRIMARY KEY,
-	medicareNumber INTEGER,
-	medicareDateOfIssue DATE,
-	medicareDAteOfExpiry DATE,
+	medicareNumber INTEGER NOT NULL,
+	medicareDateOfIssue DATE NOT NULL,
+	medicareDAteOfExpiry DATE NOT NULL,
 	FOREIGN KEY (pid) REFERENCES Person(pid)
 );
 
@@ -98,7 +98,7 @@ CREATE TABLE VaccineRecord (
 	vaccineType VARCHAR(30),
 	lotNumber INTEGER,
 	PRIMARY KEY (pid, nurseID),
-	FOREIGN KEY (pid) REFERENCES Person(pid)
+	FOREIGN KEY (pid) REFERENCES Person(pid),
 	FOREIGN KEY (nurseID) REFERENCES PublicHealthWorker(pid)
 );
 
