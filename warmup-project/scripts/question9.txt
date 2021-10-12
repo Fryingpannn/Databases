@@ -1,0 +1,4 @@
+SELECT city, COUNT(DISTINCT Person.pid)
+FROM Person, VaccineRecord
+WHERE province = 'QC' AND VaccineRecord.pid = Person.pid
+GROUP BY city;
