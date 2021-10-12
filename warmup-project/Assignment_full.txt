@@ -1,0 +1,287 @@
+-- We certify that this submission is the original work of members of the group and meets the Faculty's Expectations of Originality
+
+--Q1
+
+--Q2
+
+--Q3
+
+--Q4
+
+--Q5
+
+
+--Q6
+
+
+-- Q7
+
+SELECT  VaccineRecord.vaccineType , Vaccine.dateOfApproval, Vaccine.status, count(VaccineRecord.vaccineType)
+FROM Vaccine, VaccineRecord, VaccinationFacility
+where Vaccine.`type` = VaccineRecord.vaccineType AND
+		VaccinationFacility.name = VaccineRecord.location AND
+		VaccinationFacility.province = "Quebec"
+group by VaccineRecord.vaccineType ;
+
+|vaccineType|dateOfApproval|status|Number of people vaccinated|
+|-----------|--------------|------|---------------------------|
+|Pfizer     |2020-10-09    |SAFE  |5                          |
+|Moderna    |2020-10-12    |SAFE  |4                          |
+|Janssen    |2020-11-30    |SAFE  |5                          |
+
+-- Q8
+
+Select Person.pid, Person.firstName , Person.lastName , Count(VaccineRecord.nurseID)
+from Person, PublicHealthWorker, VaccineRecord, VaccinationFacility
+where PublicHealthWorker.occupation = "Nurse" AND
+		VaccinationFacility.name = "Twinder Gym" AND
+		VaccineRecord.nurseID = Person.pid AND 
+		VaccineRecord.location = VaccinationFacility.name AND
+		PublicHealthWorker.pid = Person.pid 
+GROUP BY VaccineRecord.nurseID ;
+
+|pid|firstName|lastName  |Number of vaccines given|
+|---|---------|----------|------------------------|
+|48 |Adair    |Southerell|2                       |
+|22 |Kate     |Bedle     |3                       |
+
+
+-- Q9
+
+SELECT city, COUNT(DISTINCT Person.pid)
+FROM Person, VaccineRecord
+WHERE province = 'QC' AND VaccineRecord.pid = Person.pid
+GROUP BY city;
+
+
+|city                   |COUNT(DISTINCT Person.pid)|
+|-----------------------|--------------------------|
+|Berthierville          |1                         |
+|Charlemagne            |1                         |
+|Les Coteaux            |1                         |
+|Saint-Eustache         |1                         |
+|Saint-Rémi             |1                         |
+|Sainte-Anne-des-Plaines|1                         |
+|Sutton                 |1                         |
+
+SELECT * FROM AgeGroup 
+
+|groupNumber|minAge|maxAge|
+|-----------|------|------|
+|1          |80    |200   |
+|2          |70    |79    |
+|3          |60    |69    |
+|4          |50    |59    |
+|5          |40    |49    |
+|6          |30    |39    |
+|7          |18    |29    |
+|8          |12    |17    |
+|9          |5     |11    |
+|10         |0     |4     |
+
+SELECT * FROM InfectionHistory 
+
+|dateOfInfection|pid|
+|---------------|---|
+|2020-12-31     |2  |
+|2021-08-22     |5  |
+|2020-09-10     |7  |
+|2020-07-29     |14 |
+|2021-09-06     |16 |
+|2021-03-26     |18 |
+|2020-09-26     |19 |
+|2021-05-12     |29 |
+|2021-02-10     |40 |
+|2020-11-04     |42 |
+
+SELECT * FROM Person
+
+|pid|firstName |lastName  |dateOfBirth|phoneNumber |address                   |city                   |province|postalCode|citizenship  |email                       |
+|---|----------|----------|-----------|------------|--------------------------|-----------------------|--------|----------|-------------|----------------------------|
+|1  |Teddie    |Hardisty  |1979-12-23 |252-953-2301|83323 Forest Run Parkway  |Ajax                   |ON      |L1Z       |Canada       |thardisty0@addtoany.com     |
+|2  |Ivonne    |Scoggins  |1974-12-15 |212-447-2564|1014 Glendale Hill        |Jamaica                |NY      |11470     |United States|iscoggins1@berkeley.edu     |
+|3  |Berni     |McConnal  |2012-09-26 |517-666-0831|8867 Nevada Junction      |Lansing                |MI      |48912     |United States|bmcconnal2@example.com      |
+|4  |Ina       |Rockcliffe|1982-08-09 |723-652-2891|6157 Banding Court        |Beloeil                |QC      |J3H       |Canada       |irockcliffe3@devhub.com     |
+|5  |Caritta   |Reynoldson|2016-11-30 |944-538-5862|6617 Little Fleur Way     |Sutton                 |QC      |J5B       |Canada       |creynoldson4@gravatar.com   |
+|6  |Aime      |Philps    |1971-04-28 |294-347-1916|029 Buhler Pass           |Berthierville          |QC      |S3N       |Canada       |aphilps5@apple.com          |
+|7  |Odette    |Brogan    |2007-03-16 |614-342-8156|24 Park Meadow Parkway    |Saint-Eustache         |QC      |J7R       |Canada       |obrogan6@drupal.org         |
+|8  |Costanza  |Powe      |2019-10-11 |812-486-3347|37307 Blaine Junction     |Delson                 |QC      |J5B       |Canada       |cpowe7@mapquest.com         |
+|9  |Esdras    |Glisane   |1939-03-12 |585-573-6237|30 La Follette Junction   |Rochester              |NY      |14614     |United States|eglisane8@mit.edu           |
+|10 |Bianca    |Renoden   |2014-04-28 |523-602-2830|8036 Golf Course Street   |Omemee                 |ON      |V1E       |Canada       |brenoden9@flickr.com        |
+|11 |Juieta    |Raecroft  |2013-01-26 |942-147-2251|0402 Dovetail Road        |Saint-Lin-Laurentides  |QC      |J5M       |Canada       |jraecrofta@geocities.com    |
+|12 |Toby      |Beccles   |1971-01-15 |518-555-8682|0886 Summerview Pass      |Schenectady            |NY      |12305     |United States|tbecclesb@weebly.com        |
+|13 |Vinny     |Menendez  |2019-10-01 |266-579-6215|2 Monica Court            |Lebel-sur-Quévillon    |QC      |N2A       |Canada       |vmenendezc@google.com       |
+|14 |Ad        |Bourbon   |1941-11-02 |468-597-0544|1479 Wayridge Junction    |L'Assomption           |QC      |J5W       |Canada       |abourbond@nsw.gov.au        |
+|15 |Floria    |Kmicicki  |2018-11-07 |771-504-8335|7 Chinook Place           |Omemee                 |ON      |V1E       |Canada       |fkmicickie@usnews.com       |
+|16 |Mario     |Luetchford|1977-05-19 |424-769-2421|6438 Monterey Hill        |Sainte-Thérèse         |QC      |J7G       |Canada       |mluetchfordf@etsy.com       |
+|17 |Corabel   |Pancoust  |2005-11-08 |902-849-2066|330 Kropf Pass            |Repentigny             |QC      |J6V       |Canada       |cpancoustg@elpais.com       |
+|18 |Arnold    |Popworth  |1995-06-18 |408-902-1896|4 Sundown Circle          |Bedford                |QC      |J6W       |Canada       |apopworthh@theatlantic.com  |
+|19 |Stacee    |Down      |1948-08-06 |587-787-9239|02849 Westend Lane        |Oshawa                 |ON      |L1K       |Canada       |sdowni@geocities.com        |
+|20 |Meta      |Rumens    |1972-01-21 |439-979-5835|99 Eastlawn Lane          |Kirkland               |QC      |H9J       |Canada       |mrumensj@godaddy.com        |
+|21 |Aeriel    |Agates    |2018-12-27 |211-873-5331|3 Barby Road              |Forestville            |QC      |G2B       |Canada       |aagatesk@smugmug.com        |
+|22 |Kate      |Bedle     |1984-05-23 |270-134-5216|69140 Loeprich Avenue     |Sainte-Anne-des-Plaines|QC      |J4X       |Canada       |kbedlel@comsenz.com         |
+|23 |Rosina    |Saurat    |1971-02-24 |175-699-2481|6329 Fordem Point         |Blainville             |QC      |J7J       |Canada       |rsauratm@ftc.gov            |
+|24 |Mignonne  |Trazzi    |1998-04-07 |675-818-0868|2003 Burrows Plaza        |Cookshire-Eaton        |QC      |M4C       |Canada       |mtrazzin@si.edu             |
+|25 |Maybelle  |Djordjevic|1980-06-13 |925-882-3155|0151 Carey Way            |L'Épiphanie            |QC      |J5X       |Canada       |mdjordjevico@tuttocitta.it  |
+|26 |Grady     |Luscott   |1944-04-01 |440-323-4263|430 Lotheville Park       |Collingwood            |ON      |L9Y       |Canada       |gluscottp@examiner.com      |
+|27 |Jobi      |Aymer     |1958-01-05 |136-361-2251|58 Eliot Parkway          |Petrolia               |ON      |N0N       |Canada       |jaymerq@instagram.com       |
+|28 |Carmencita|Marchetti |1942-03-13 |403-858-1838|20982 Tennessee Center    |Cowansville            |QC      |J2K       |Canada       |cmarchettir@unblog.fr       |
+|29 |Leonie    |Durgan    |1991-03-25 |436-700-4170|0 North Pass              |Lambton Shores         |ON      |J5T       |Canada       |ldurgans@wunderground.com   |
+|30 |Rorke     |Gilvear   |2017-01-09 |300-945-6932|41448 Boyd Place          |Lavaltrie              |QC      |J5T       |Canada       |rgilveart@google.it         |
+|31 |Levin     |Ellissen  |1936-02-28 |418-818-0900|90357 Straubel Street     |Dollard-Des Ormeaux    |QC      |H9P       |Canada       |lellissenu@msu.edu          |
+|32 |Tobias    |Hubatsch  |2015-09-16 |347-190-2705|91146 Monument Terrace    |Bronx                  |NY      |10469     |United States|thubatschv@alibaba.com      |
+|33 |Keene     |Kauscher  |1996-02-19 |718-740-1610|5507 Brown Court          |Bronx                  |NY      |10469     |United States|kkauscherw@pcworld.com      |
+|34 |Emory     |Sullivan  |1952-02-28 |341-738-3301|541 Magdeline Terrace     |Trois-Rivières         |QC      |L8J       |Canada       |esullivanx@independent.co.uk|
+|35 |Nancee    |Haitlie   |1950-08-19 |212-609-1088|90970 Delaware Crossing   |Jamaica                |NY      |11480     |United States|nhaitliey@engadget.com      |
+|36 |Merrill   |Veregan   |2017-08-13 |820-561-7674|14464 Cottonwood Parkway  |Stratford              |ON      |C1B       |Canada       |mvereganz@tamu.edu          |
+|37 |Staffard  |Phidgin   |1968-07-20 |484-164-2203|9302 Southridge Plaza     |Charlemagne            |QC      |J6V       |Canada       |sphidgin10@youtube.com      |
+|38 |Lazaro    |Rama      |2012-09-23 |105-192-4190|195 Kings Place           |Arnprior               |ON      |K7S       |Canada       |lrama11@godaddy.com         |
+|39 |Jermayne  |Gamblin   |2006-07-25 |316-501-2773|7 Coolidge Terrace        |London                 |ON      |N6C       |Canada       |jgamblin12@microsoft.com    |
+|40 |Danny     |Dennitts  |1990-02-24 |193-930-3846|036 Oneill Drive          |Oshawa                 |ON      |L1K       |Canada       |ddennitts13@arizona.edu     |
+|41 |Gareth    |Alvis     |1984-07-10 |760-293-5276|76 Carey Court            |Saint-Rémi             |QC      |K1G       |Canada       |galvis14@php.net            |
+|42 |Collete   |Molden    |1997-12-06 |295-377-6242|44327 Butternut Street    |Petrolia               |ON      |N0N       |Canada       |cmolden15@eventbrite.com    |
+|43 |Hedi      |Colvin    |2004-02-12 |315-534-3563|4479 Prentice Junction    |Syracuse               |NY      |13205     |United States|hcolvin16@topsy.com         |
+|44 |Dayle     |Skade     |1979-07-18 |959-929-6654|74775 Melody Alley        |Oakville               |ON      |L6J       |Canada       |dskade17@ibm.com            |
+|45 |Raddy     |Conaboy   |2005-03-16 |467-249-7856|983 Hudson Crossing       |Bécancour              |QC      |G9H       |Canada       |rconaboy18@timesonline.co.uk|
+|46 |Genna     |Reveland  |2013-03-23 |678-949-5161|1021 Algoma Lane          |Richmond               |QC      |V6Z       |Canada       |greveland19@squidoo.com     |
+|47 |Emera     |Cord      |1983-07-27 |189-490-5426|7122 Clyde Gallagher Drive|Albanel                |QC      |G8M       |Canada       |ecord1a@spotify.com         |
+|48 |Adair     |Southerell|1939-10-22 |986-186-9734|34392 Dixon Lane          |Les Coteaux            |QC      |J7X       |Canada       |asoutherell1b@123-reg.co.uk |
+|49 |Binni     |Balmadier |1945-12-21 |248-658-6471|51491 Westridge Way       |Detroit                |MI      |48242     |United States|bbalmadier1c@archive.org    |
+|50 |Stefan    |Megarry   |1974-07-16 |530-661-4584|24 Fairview Alley         |Innisfil               |ON      |L9S       |Canada       |smegarry1d@va.gov           |
+|51 |Mark      |Baloney   |2018-12-01 |514-665-5656|66 Broad drive road       |New York               |NY      |14644     |United States|yournewboy@gmail.com        |
+
+
+
+
+SELECT * FROM PublicHealthWorker 
+|pid|startDate |endDate   |facilityID|occupation|
+|---|----------|----------|----------|----------|
+|4  |          |          |          |Nurse     |
+|6  |          |          |          |Nurse     |
+|22 |2021-05-01|2021-08-01|107       |Nurse     |
+|30 |2021-05-15|2021-08-15|108       |Secretary |
+|31 |2021-05-15|2021-08-15|108       |Security  |
+|34 |2021-05-15|2021-08-15|108       |Manager   |
+|37 |2021-05-15|2021-08-15|108       |Nurse     |
+|41 |2021-05-15|2021-08-15|108       |Nurse     |
+|45 |2021-05-01|2021-08-01|107       |Secretary |
+|46 |2021-05-01|2021-08-01|107       |Security  |
+|47 |2021-05-01|2021-08-01|107       |Manager   |
+|48 |2021-05-01|2021-08-01|107       |Nurse     |
+
+SELECT * FROM VaccinationFacility
+
+|facilityID|capacity|name                      |address                    |phoneNumber |type             |webAddress          |province|city       |
+|----------|--------|--------------------------|---------------------------|------------|-----------------|--------------------|--------|-----------|
+|107       |181     |Twinder Gym               |0 Brickson Park Center     |166-586-7643|Gym              |webeden.co.uk       |Quebec  |Montreal   |
+|108       |184     |Geba Services             |9169 Orin Park             |294-965-6593|Consumer Services|domainmarket.com    |Quebec  |Laval      |
+|113       |193     |Jabbercube Medical Center |7 Mandrake Avenue          |645-781-5880|Health Care      |opensource.org      |Quebec  |Gatineau   |
+|120       |91      |Izio Banks                |33313 Blue Bill Park Circle|627-311-9424|Finance          |admin.ch            |Ontario |Ottawa     |
+|132       |201     |Zoonder Factory           |62018 Barby Street         |325-303-0563|Steel Factory    |networksolutions.com|Ontario |Ottawa     |
+|140       |171     |Pixonyx Energy            |04 Loeprich Hill           |324-321-9611|Energy           |webeden.co.uk       |Quebec  |Quebec City|
+|164       |50      |Skimia Construction School|0 Scott Drive              |454-395-4252|Technical School |blogger.com         |Ontario |Ottawa     |
+|174       |55      |Trudoo School Of Finance  |6279 Rusk Circle           |188-709-3031|School           |msn.com             |Quebec  |Quebec City|
+|179       |87      |Brainsphere Services      |904 Dayton Pass            |665-247-7100|Consumer Services|gmpg.org            |Quebec  |Quebec City|
+|184       |237     |Realcube Hydro            |7280 Northwestern Place    |327-795-6985|Energy           |macromedia.com      |Ontario |Ottawa     |
+|186       |221     |Tazzy Tech                |9 Huxley Crossing          |303-328-5056|Mall             |ebay.com            |Quebec  |Quebec City|
+|188       |98      |Gigaclub Consulting       |7 East Lane                |198-815-3374|Finance          |domainmarket.com    |Quebec  |Quebec City|
+|193       |184     |Fivespan Finance          |4853 Schlimgen Alley       |260-656-5827|Finance          |huffingtonpost.com  |Quebec  |Quebec City|
+
+
+
+SELECT * FROM Vaccine 
+
+|type       |status   |dateOfApproval|dateOfSuspension|
+|-----------|---------|--------------|----------------|
+|AstraZeneca|SAFE     |2020-11-30    |                |
+|Janssen    |SAFE     |2020-11-30    |                |
+|Moderna    |SAFE     |2020-10-12    |                |
+|Pfizer     |SAFE     |2020-10-09    |                |
+|Sinovac    |SUSPENDED|              |2020-08-28      |
+|SputnikV   |SUSPENDED|              |2020-08-11      |
+
+
+
+SELECT * FROM VaccineRecord 
+
+|nurseID|pid|location                 |country|vaccineDate|doseNumber|vaccineType|lotNumber|
+|-------|---|-------------------------|-------|-----------|----------|-----------|---------|
+|22     |1  |Twinder Gym              |Canada |2021-05-03 |1         |Pfizer     |2003     |
+|48     |1  |Twinder Gym              |Canada |2021-06-03 |2         |Pfizer     |2008     |
+|22     |2  |Twinder Gym              |Canada |2021-05-05 |1         |Moderna    |2012     |
+|48     |2  |Twinder Gym              |Canada |2021-06-05 |2         |Moderna    |2017     |
+|22     |5  |Twinder Gym              |Canada |2021-05-03 |1         |Pfizer     |2003     |
+|37     |6  |Geba Services            |Canada |2021-06-03 |1         |Pfizer     |2108     |
+|41     |6  |Geba Services            |Canada |2021-07-03 |2         |Pfizer     |2111     |
+|37     |7  |Geba Services            |Canada |2021-06-03 |1         |Moderna    |2088     |
+|41     |7  |Geba Services            |Canada |2021-07-03 |2         |Moderna    |2099     |
+|37     |9  |Geba Services            |Canada |2021-08-03 |1         |Janssen    |2555     |
+|48     |22 |Jabbercube Medical Center|Canada |2021-04-28 |1         |Janssen    |2333     |
+|41     |37 |Jabbercube Medical Center|Canada |2021-04-29 |1         |Janssen    |2334     |
+|37     |41 |Jabbercube Medical Center|Canada |2021-04-29 |1         |Janssen    |2334     |
+|22     |48 |Jabbercube Medical Center|Canada |2021-04-28 |1         |Janssen    |2333     |
+
+
+
+SELECT * FROM registeredPerson
+
+|pid|medicareNumber|medicareDateOfIssue|medicareDAteOfExpiry|
+|---|--------------|-------------------|--------------------|
+|1  |9897          |2015-04-01         |2021-02-03          |
+|4  |9754          |2015-09-16         |2021-06-09          |
+|5  |9393          |2016-06-15         |2022-06-16          |
+|6  |9519          |2017-06-13         |2024-06-16          |
+|7  |9714          |2015-02-18         |2024-08-07          |
+|8  |9657          |2015-03-11         |2022-06-15          |
+|10 |9574          |2015-03-25         |2023-10-30          |
+|11 |9523          |2015-04-13         |2022-04-24          |
+|13 |9265          |2016-06-29         |2020-12-20          |
+|14 |9001          |2015-11-27         |2021-11-04          |
+|15 |9281          |2017-12-16         |2022-08-21          |
+|16 |9614          |2015-06-01         |2023-11-15          |
+|17 |9915          |2016-11-01         |2024-05-07          |
+|18 |9180          |2016-10-22         |2023-08-02          |
+|19 |9524          |2015-09-10         |2024-06-03          |
+|20 |9784          |2016-09-13         |2021-11-13          |
+|21 |9758          |2016-03-13         |2021-01-24          |
+|22 |9519          |2015-11-22         |2022-12-13          |
+|23 |9119          |2017-08-25         |2021-10-07          |
+|24 |9364          |2017-03-20         |2023-01-25          |
+|25 |9934          |2017-04-13         |2023-03-06          |
+|26 |9696          |2016-12-24         |2021-03-27          |
+|27 |9303          |2017-09-25         |2024-09-29          |
+|28 |9117          |2016-11-21         |2023-04-26          |
+|29 |9627          |2017-03-07         |2022-12-16          |
+|30 |9298          |2016-05-11         |2024-01-04          |
+|31 |9910          |2017-12-12         |2021-05-15          |
+|34 |9428          |2017-07-17         |2020-12-01          |
+|36 |9922          |2017-02-09         |2022-03-29          |
+|37 |9538          |2016-06-07         |2023-01-29          |
+|38 |9567          |2017-11-14         |2021-05-08          |
+|39 |9634          |2015-04-23         |2022-03-01          |
+|41 |9862          |2015-09-17         |2024-06-06          |
+|42 |9418          |2016-08-30         |2022-04-28          |
+|44 |9809          |2016-01-05         |2021-09-25          |
+|45 |9778          |2016-01-17         |2023-11-23          |
+|46 |9335          |2017-03-04         |2023-07-10          |
+|47 |9162          |2015-12-16         |2023-07-28          |
+|48 |9262          |2015-12-12         |2023-08-28          |
+|50 |9166          |2015-12-11         |2023-05-28          |
+
+
+
+SELECT * FROM unregisteredPerson
+
+|pid|PassportNumber|
+|---|--------------|
+|2  |352674        |
+|3  |341129        |
+|9  |353404        |
+|12 |335789        |
+|32 |368210        |
+|33 |310307        |
+|35 |398479        |
+|43 |331278        |
+|49 |365622        |
+|51 |321666        |
+
