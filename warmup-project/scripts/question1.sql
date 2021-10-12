@@ -1,4 +1,5 @@
-SELECT Person.province,
+SELECT 
+Person.province,
 Person.firstName,
 Person.lastName, 
 Person.dateOfBirth,
@@ -10,11 +11,17 @@ Person.city,
 VaccineRecord.vaccineDate,
 VaccineRecord.vaccineType,
 CASE
-	WHEN COUNT(Person.pid) 
-	THEN CASE 
-		WHEN COUNT(InfectionHistory.pid) THEN 'True' ELSE 'False' END
-END AS 'Infected With COVID-19'
-FROM (Person, AgeGroup, registeredPerson, unregisteredPerson, InfectionHistory)
+	WHEN 
+    (
+		SELECT COUNT(InfectionHistory.pid) FROM InfectionHistory 
+		WHERE Person.pid=InfectionHistory.pid
+	) 
+		THEN 'True' 
+        ELSE 'False' 
+        END AS 'Infected With COVID-19'
+FROM Person
+LEFT JOIN registeredPerson ON Person.pid=registeredPerson.pid
+LEFT JOIN unregisteredPerson ON Person.pid=unregisteredPerson.pid
 INNER JOIN VaccineRecord
 ON Person.pid=VaccineRecord.pid
 WHERE 
