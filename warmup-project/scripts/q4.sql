@@ -6,3 +6,4 @@ WHERE Person.pid = unregisteredPerson.pid AND
 Person.pid = VaccineRecord.pid AND 
 VaccineRecord.location = VaccinationFacility.name AND
 VaccinationFacility.province = "Quebec"
+GROUP BY Person.firstName, Person.lastName ;

@@ -1,20 +1,223 @@
 -- We certify that this submission is the original work of members of the group and meets the Faculty's Expectations of Originality
 
---Q1
+------------------------------ Q1
 
---Q2
+SELECT 
+Person.province,
+Person.firstName,
+Person.lastName, 
+Person.dateOfBirth,
+registeredPerson.medicareNumber,
+unregisteredPerson.PassportNumber,
+Person.email,
+Person.phoneNumber, 
+Person.city,
+VaccineRecord.vaccineDate,
+VaccineRecord.vaccineType,
+CASE
+	WHEN 
+    (
+		SELECT COUNT(InfectionHistory.pid) FROM InfectionHistory 
+		WHERE Person.pid=InfectionHistory.pid
+	) 
+		THEN 'True' 
+        ELSE 'False' 
+        END AS 'Infected With COVID-19'
+FROM Person
+LEFT JOIN registeredPerson ON Person.pid=registeredPerson.pid
+LEFT JOIN unregisteredPerson ON Person.pid=unregisteredPerson.pid
+INNER JOIN VaccineRecord
+ON Person.pid=VaccineRecord.pid
+WHERE 
+	TIMESTAMPDIFF(YEAR, Person.dateOfBirth, CURDATE())
+	BETWEEN (SELECT minAge FROM AgeGroup WHERE groupNumber=10) AND (SELECT maxAge FROM AgeGroup WHERE groupNumber=2);
+	
+	|province|firstName|lastName  |dateOfBirth|medicareNumber|PassportNumber|email                    |phoneNumber |city                   |vaccineDate|vaccineType|Infected With COVID-19|
+|--------|---------|----------|-----------|--------------|--------------|-------------------------|------------|-----------------------|-----------|-----------|----------------------|
+|ON      |Teddie   |Hardisty  |1979-12-23 |9897          |              |thardisty0@addtoany.com  |252-953-2301|Ajax                   |2021-05-03 |Pfizer     |False                 |
+|ON      |Teddie   |Hardisty  |1979-12-23 |9897          |              |thardisty0@addtoany.com  |252-953-2301|Ajax                   |2021-06-03 |Pfizer     |False                 |
+|NY      |Ivonne   |Scoggins  |1974-12-15 |              |352674        |iscoggins1@berkeley.edu  |212-447-2564|Jamaica                |2021-05-05 |Moderna    |True                  |
+|NY      |Ivonne   |Scoggins  |1974-12-15 |              |352674        |iscoggins1@berkeley.edu  |212-447-2564|Jamaica                |2021-06-05 |Moderna    |True                  |
+|QC      |Caritta  |Reynoldson|2016-11-30 |9393          |              |creynoldson4@gravatar.com|944-538-5862|Sutton                 |2021-05-03 |Pfizer     |True                  |
+|QC      |Aime     |Philps    |1971-04-28 |9519          |              |aphilps5@apple.com       |294-347-1916|Berthierville          |2021-06-03 |Pfizer     |False                 |
+|QC      |Aime     |Philps    |1971-04-28 |9519          |              |aphilps5@apple.com       |294-347-1916|Berthierville          |2021-07-03 |Pfizer     |False                 |
+|QC      |Odette   |Brogan    |2007-03-16 |9714          |              |obrogan6@drupal.org      |614-342-8156|Saint-Eustache         |2021-06-03 |Moderna    |True                  |
+|QC      |Odette   |Brogan    |2007-03-16 |9714          |              |obrogan6@drupal.org      |614-342-8156|Saint-Eustache         |2021-07-03 |Moderna    |True                  |
+|QC      |Kate     |Bedle     |1984-05-23 |9519          |              |kbedlel@comsenz.com      |270-134-5216|Sainte-Anne-des-Plaines|2021-04-28 |Janssen    |False                 |
+|QC      |Staffard |Phidgin   |1968-07-20 |9538          |              |sphidgin10@youtube.com   |484-164-2203|Charlemagne            |2021-04-29 |Janssen    |False                 |
+|QC      |Gareth   |Alvis     |1984-07-10 |9862          |              |galvis14@php.net         |760-293-5276|Saint-Rémi             |2021-04-29 |Janssen    |False                 |
 
---Q3
+
+------------------------------ Q2
+
+SELECT 
+Person.province,
+Person.firstName,
+Person.lastName, 
+Person.dateOfBirth,
+Person.email,
+Person.phoneNumber,
+Person.city,
+CASE
+	WHEN 
+    (
+		SELECT COUNT(InfectionHistory.pid) FROM InfectionHistory 
+		WHERE Person.pid=InfectionHistory.pid
+	) 
+		THEN 'True' 
+        ELSE 'False' 
+        END AS 'Infected With COVID-19'
+FROM Person
+INNER JOIN registeredPerson ON Person.pid=registeredPerson.pid
+WHERE 
+	TIMESTAMPDIFF(YEAR, Person.dateOfBirth, CURDATE()) >= (SELECT minAge FROM AgeGroup WHERE groupNumber=7) AND
+    NOT EXISTS(
+		SELECT 1
+		FROM VaccineRecord
+		WHERE VaccineRecord.pid = Person.pid
+	);
+
+|province|firstName |lastName  |dateOfBirth|email                       |phoneNumber |city               |Infected With COVID-19|
+|--------|----------|----------|-----------|----------------------------|------------|-------------------|----------------------|
+|QC      |Ina       |Rockcliffe|1982-08-09 |irockcliffe3@devhub.com     |723-652-2891|Beloeil            |False                 |
+|QC      |Ad        |Bourbon   |1941-11-02 |abourbond@nsw.gov.au        |468-597-0544|LAssomption       |True                  |
+|QC      |Mario     |Luetchford|1977-05-19 |mluetchfordf@etsy.com       |424-769-2421|Sainte-Thérèse     |True                  |
+|QC      |Arnold    |Popworth  |1995-06-18 |apopworthh@theatlantic.com  |408-902-1896|Bedford            |True                  |
+|ON      |Stacee    |Down      |1948-08-06 |sdowni@geocities.com        |587-787-9239|Oshawa             |True                  |
+|QC      |Meta      |Rumens    |1972-01-21 |mrumensj@godaddy.com        |439-979-5835|Kirkland           |False                 |
+|QC      |Rosina    |Saurat    |1971-02-24 |rsauratm@ftc.gov            |175-699-2481|Blainville         |False                 |
+|QC      |Mignonne  |Trazzi    |1998-04-07 |mtrazzin@si.edu             |675-818-0868|Cookshire-Eaton    |False                 |
+|QC      |Maybelle  |Djordjevic|1980-06-13 |mdjordjevico@tuttocitta.it  |925-882-3155|LÉpiphanie        |False                 |
+|ON      |Grady     |Luscott   |1944-04-01 |gluscottp@examiner.com      |440-323-4263|Collingwood        |False                 |
+|ON      |Jobi      |Aymer     |1958-01-05 |jaymerq@instagram.com       |136-361-2251|Petrolia           |False                 |
+|QC      |Carmencita|Marchetti |1942-03-13 |cmarchettir@unblog.fr       |403-858-1838|Cowansville        |False                 |
+|ON      |Leonie    |Durgan    |1991-03-25 |ldurgans@wunderground.com   |436-700-4170|Lambton Shores     |True                  |
+|QC      |Levin     |Ellissen  |1936-02-28 |lellissenu@msu.edu          |418-818-0900|Dollard-Des Ormeaux|False                 |
+|QC      |Emory     |Sullivan  |1952-02-28 |esullivanx@independent.co.uk|341-738-3301|Trois-Rivières     |False                 |
+|ON      |Collete   |Molden    |1997-12-06 |cmolden15@eventbrite.com    |295-377-6242|Petrolia           |True                  |
+|ON      |Dayle     |Skade     |1979-07-18 |dskade17@ibm.com            |959-929-6654|Oakville           |False                 |
+|QC      |Emera     |Cord      |1983-07-27 |ecord1a@spotify.com         |189-490-5426|Albanel            |False                 |
+|ON      |Stefan    |Megarry   |1974-07-16 |smegarry1d@va.gov           |530-661-4584|Innisfil           |False                 |
+
+------------------------------ Q3
+
+SELECT VaccinationFacility.facilityID, VaccinationFacility.name, VaccinationFacility.address,phoneNumber, 
+VaccinationFacility.type, VaccinationFacility.capacity, 
+VaccinationFacility.webAddress
+FROM VaccinationFacility
+WHERE VaccinationFacility.province = "Quebec";
+
+|facilityID|name                     |address               |phoneNumber |type             |capacity|webAddress        |
+|----------|-------------------------|----------------------|------------|-----------------|--------|------------------|
+|107       |Twinder Gym              |0 Brickson Park Center|166-586-7643|Gym              |181     |webeden.co.uk     |
+|108       |Geba Services            |9169 Orin Park        |294-965-6593|Consumer Services|184     |domainmarket.com  |
+|113       |Jabbercube Medical Center|7 Mandrake Avenue     |645-781-5880|Health Care      |193     |opensource.org    |
+|140       |Pixonyx Energy           |04 Loeprich Hill      |324-321-9611|Energy           |171     |webeden.co.uk     |
+|174       |Trudoo School Of Finance |6279 Rusk Circle      |188-709-3031|School           |55      |msn.com           |
+|179       |Brainsphere Services     |904 Dayton Pass       |665-247-7100|Consumer Services|87      |gmpg.org          |
+|186       |Tazzy Tech               |9 Huxley Crossing     |303-328-5056|Mall             |221     |ebay.com          |
+|188       |Gigaclub Consulting      |7 East Lane           |198-815-3374|Finance          |98      |domainmarket.com  |
+|193       |Fivespan Finance         |4853 Schlimgen Alley  |260-656-5827|Finance          |184     |huffingtonpost.com|
 
 --Q4
 
---Q5
+SELECT VaccineRecord.location, Person.firstName, Person.lastName, Person.dateOfBirth,
+Person.phoneNumber, Person.address, Person.city, Person.province,
+Person.postalCode, Person.citizenship, Person.email
+FROM Person, VaccinationFacility, unregisteredPerson, VaccineRecord
+WHERE Person.pid = unregisteredPerson.pid AND
+Person.pid = VaccineRecord.pid AND 
+VaccineRecord.location = VaccinationFacility.name AND
+VaccinationFacility.province = "Quebec"
+GROUP BY Person.firstName, Person.lastName ;
+
+|location     |firstName|lastName|dateOfBirth|phoneNumber |address                |city     |province|postalCode|citizenship  |email                  |
+|-------------|---------|--------|-----------|------------|-----------------------|---------|--------|----------|-------------|-----------------------|
+|Twinder Gym  |Ivonne   |Scoggins|1974-12-15 |212-447-2564|1014 Glendale Hill     |Jamaica  |NY      |11470     |United States|iscoggins1@berkeley.edu|
+|Geba Services|Esdras   |Glisane |1939-03-12 |585-573-6237|30 La Follette Junction|Rochester|NY      |14614     |United States|eglisane8@mit.edu      |
+
+------------------------------ Q5
+
+SELECT Person.firstName, Person.lastName
+FROM Person, PublicHealthWorker
+WHERE Person.pid = PublicHealthWorker.pid AND
+	PublicHealthWorker.occupation = "Nurse" AND
+    Person.pid NOT IN (SELECT DISTINCT VaccineRecord.pid FROM VaccineRecord);
+	
+	|firstName|lastName  |
+|---------|----------|
+|Ina      |Rockcliffe|
+|Jenna    |Marbles   |
+
+------------------------------ Q6
+
+SELECT Person.pid, Person.firstName, Person.lastName, Person.dateOfBirth, 
+	(SELECT MAX(VaccineRecord.doseNumber) FROM VaccineRecord WHERE VaccineRecord.pid = Person.pid) AS numOfDoses,
+    (SELECT COUNT(InfectionHistory.pid) FROM InfectionHistory WHERE InfectionHistory.pid = Person.pid) AS numOfDiagnostics
+FROM Person, VaccineRecord
+WHERE (Person.pid NOT IN (SELECT VaccineRecord.pid FROM VaccineRecord)) OR
+	(Person.pid = VaccineRecord.pid AND
+		((SELECT MAX(VaccineRecord.doseNumber) FROM VaccineRecord WHERE VaccineRecord.pid = Person.pid)) = 1) OR
+    (Person.pid = VaccineRecord.pid AND
+		((SELECT MAX(VaccineRecord.doseNumber) FROM VaccineRecord WHERE VaccineRecord.pid = Person.pid)) = 2 AND
+		((SELECT COUNT(InfectionHistory.pid) FROM InfectionHistory WHERE InfectionHistory.pid = Person.pid)) = 1)
+GROUP BY Person.pid;
+
+|pid|firstName |lastName  |dateOfBirth|numOfDoses|numOfDiagnostics|
+|---|----------|----------|-----------|----------|----------------|
+|2  |Ivonne    |Scoggins  |1974-12-15 |2         |1               |
+|3  |Berni     |McConnal  |2012-09-26 |          |0               |
+|4  |Ina       |Rockcliffe|1982-08-09 |          |0               |
+|5  |Caritta   |Reynoldson|2016-11-30 |1         |1               |
+|7  |Odette    |Brogan    |2007-03-16 |2         |1               |
+|8  |Costanza  |Powe      |2019-10-11 |          |0               |
+|9  |Esdras    |Glisane   |1939-03-12 |1         |0               |
+|10 |Bianca    |Renoden   |2014-04-28 |          |0               |
+|11 |Juieta    |Raecroft  |2013-01-26 |          |0               |
+|12 |Toby      |Beccles   |1971-01-15 |          |0               |
+|13 |Vinny     |Menendez  |2019-10-01 |          |0               |
+|14 |Ad        |Bourbon   |1941-11-02 |          |1               |
+|15 |Floria    |Kmicicki  |2018-11-07 |          |0               |
+|16 |Mario     |Luetchford|1977-05-19 |          |1               |
+|17 |Corabel   |Pancoust  |2005-11-08 |          |0               |
+|18 |Arnold    |Popworth  |1995-06-18 |          |1               |
+|19 |Stacee    |Down      |1948-08-06 |          |1               |
+|20 |Meta      |Rumens    |1972-01-21 |          |0               |
+|21 |Aeriel    |Agates    |2018-12-27 |          |0               |
+|22 |Kate      |Bedle     |1984-05-23 |1         |0               |
+|23 |Rosina    |Saurat    |1971-02-24 |          |0               |
+|24 |Mignonne  |Trazzi    |1998-04-07 |          |0               |
+|25 |Maybelle  |Djordjevic|1980-06-13 |          |0               |
+|26 |Grady     |Luscott   |1944-04-01 |          |0               |
+|27 |Jobi      |Aymer     |1958-01-05 |          |0               |
+|28 |Carmencita|Marchetti |1942-03-13 |          |0               |
+|29 |Leonie    |Durgan    |1991-03-25 |          |1               |
+|30 |Rorke     |Gilvear   |2017-01-09 |          |0               |
+|31 |Levin     |Ellissen  |1936-02-28 |          |0               |
+|32 |Tobias    |Hubatsch  |2015-09-16 |          |0               |
+|33 |Keene     |Kauscher  |1996-02-19 |          |0               |
+|34 |Emory     |Sullivan  |1952-02-28 |          |0               |
+|35 |Nancee    |Haitlie   |1950-08-19 |          |0               |
+|36 |Merrill   |Veregan   |2017-08-13 |          |0               |
+|37 |Staffard  |Phidgin   |1968-07-20 |1         |0               |
+|38 |Lazaro    |Rama      |2012-09-23 |          |0               |
+|39 |Jermayne  |Gamblin   |2006-07-25 |          |0               |
+|40 |Danny     |Dennitts  |1990-02-24 |          |1               |
+|41 |Gareth    |Alvis     |1984-07-10 |1         |0               |
+|42 |Collete   |Molden    |1997-12-06 |          |1               |
+|43 |Hedi      |Colvin    |2004-02-12 |          |0               |
+|44 |Dayle     |Skade     |1979-07-18 |          |0               |
+|45 |Raddy     |Conaboy   |2005-03-16 |          |0               |
+|46 |Genna     |Reveland  |2013-03-23 |          |0               |
+|47 |Emera     |Cord      |1983-07-27 |          |0               |
+|48 |Adair     |Southerell|1939-10-22 |1         |0               |
+|49 |Binni     |Balmadier |1945-12-21 |          |0               |
+|50 |Stefan    |Megarry   |1974-07-16 |          |0               |
+|51 |Mark      |Baloney   |2018-12-01 |          |0               |
+|52 |Jenna     |Marbles   |1989-04-01 |          |0               |
 
 
---Q6
-
-
--- Q7
+------------------------------ Q7
 
 SELECT  VaccineRecord.vaccineType , Vaccine.dateOfApproval, Vaccine.status, count(VaccineRecord.vaccineType)
 FROM Vaccine, VaccineRecord, VaccinationFacility
@@ -29,7 +232,7 @@ group by VaccineRecord.vaccineType ;
 |Moderna    |2020-10-12    |SAFE  |4                          |
 |Janssen    |2020-11-30    |SAFE  |5                          |
 
--- Q8
+------------------------------ Q8
 
 Select Person.pid, Person.firstName , Person.lastName , Count(VaccineRecord.nurseID)
 from Person, PublicHealthWorker, VaccineRecord, VaccinationFacility
@@ -46,7 +249,7 @@ GROUP BY VaccineRecord.nurseID ;
 |22 |Kate     |Bedle     |3                       |
 
 
--- Q9
+------------------------------ Q9
 
 SELECT city, COUNT(DISTINCT Person.pid)
 FROM Person, VaccineRecord
@@ -63,6 +266,9 @@ GROUP BY city;
 |Saint-Rémi             |1                         |
 |Sainte-Anne-des-Plaines|1                         |
 |Sutton                 |1                         |
+
+
+------------------------------ SELECT * R; for all relationships are presented below
 
 SELECT * FROM AgeGroup 
 
@@ -111,7 +317,7 @@ SELECT * FROM Person
 |11 |Juieta    |Raecroft  |2013-01-26 |942-147-2251|0402 Dovetail Road        |Saint-Lin-Laurentides  |QC      |J5M       |Canada       |jraecrofta@geocities.com    |
 |12 |Toby      |Beccles   |1971-01-15 |518-555-8682|0886 Summerview Pass      |Schenectady            |NY      |12305     |United States|tbecclesb@weebly.com        |
 |13 |Vinny     |Menendez  |2019-10-01 |266-579-6215|2 Monica Court            |Lebel-sur-Quévillon    |QC      |N2A       |Canada       |vmenendezc@google.com       |
-|14 |Ad        |Bourbon   |1941-11-02 |468-597-0544|1479 Wayridge Junction    |L'Assomption           |QC      |J5W       |Canada       |abourbond@nsw.gov.au        |
+|14 |Ad        |Bourbon   |1941-11-02 |468-597-0544|1479 Wayridge Junction    |LAssomption           |QC      |J5W       |Canada       |abourbond@nsw.gov.au        |
 |15 |Floria    |Kmicicki  |2018-11-07 |771-504-8335|7 Chinook Place           |Omemee                 |ON      |V1E       |Canada       |fkmicickie@usnews.com       |
 |16 |Mario     |Luetchford|1977-05-19 |424-769-2421|6438 Monterey Hill        |Sainte-Thérèse         |QC      |J7G       |Canada       |mluetchfordf@etsy.com       |
 |17 |Corabel   |Pancoust  |2005-11-08 |902-849-2066|330 Kropf Pass            |Repentigny             |QC      |J6V       |Canada       |cpancoustg@elpais.com       |
@@ -122,7 +328,7 @@ SELECT * FROM Person
 |22 |Kate      |Bedle     |1984-05-23 |270-134-5216|69140 Loeprich Avenue     |Sainte-Anne-des-Plaines|QC      |J4X       |Canada       |kbedlel@comsenz.com         |
 |23 |Rosina    |Saurat    |1971-02-24 |175-699-2481|6329 Fordem Point         |Blainville             |QC      |J7J       |Canada       |rsauratm@ftc.gov            |
 |24 |Mignonne  |Trazzi    |1998-04-07 |675-818-0868|2003 Burrows Plaza        |Cookshire-Eaton        |QC      |M4C       |Canada       |mtrazzin@si.edu             |
-|25 |Maybelle  |Djordjevic|1980-06-13 |925-882-3155|0151 Carey Way            |L'Épiphanie            |QC      |J5X       |Canada       |mdjordjevico@tuttocitta.it  |
+|25 |Maybelle  |Djordjevic|1980-06-13 |925-882-3155|0151 Carey Way            |LÉpiphanie            |QC      |J5X       |Canada       |mdjordjevico@tuttocitta.it  |
 |26 |Grady     |Luscott   |1944-04-01 |440-323-4263|430 Lotheville Park       |Collingwood            |ON      |L9Y       |Canada       |gluscottp@examiner.com      |
 |27 |Jobi      |Aymer     |1958-01-05 |136-361-2251|58 Eliot Parkway          |Petrolia               |ON      |N0N       |Canada       |jaymerq@instagram.com       |
 |28 |Carmencita|Marchetti |1942-03-13 |403-858-1838|20982 Tennessee Center    |Cowansville            |QC      |J2K       |Canada       |cmarchettir@unblog.fr       |
