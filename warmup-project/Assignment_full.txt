@@ -137,7 +137,16 @@ GROUP BY Person.firstName, Person.lastName ;
 |Geba Services|Esdras   |Glisane |1939-03-12 |585-573-6237|30 La Follette Junction|Rochester|NY      |14614     |United States|eglisane8@mit.edu      |
 
 --Q5
-
+SELECT Person.firstName, Person.lastName
+FROM Person, PublicHealthWorker
+WHERE Person.pid = PublicHealthWorker.pid AND
+	PublicHealthWorker.occupation = "Nurse" AND
+    Person.pid NOT IN (SELECT DISTINCT VaccineRecord.pid FROM VaccineRecord);
+	
+	|firstName|lastName  |
+|---------|----------|
+|Ina      |Rockcliffe|
+|Jenna    |Marbles   |
 
 --Q6
 
