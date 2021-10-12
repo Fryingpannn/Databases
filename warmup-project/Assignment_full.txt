@@ -1,6 +1,6 @@
 -- We certify that this submission is the original work of members of the group and meets the Faculty's Expectations of Originality
 
---Q1
+------------------------------ Q1
 
 SELECT 
 Person.province,
@@ -48,7 +48,7 @@ WHERE
 |QC      |Gareth   |Alvis     |1984-07-10 |9862          |              |galvis14@php.net         |760-293-5276|Saint-Rémi             |2021-04-29 |Janssen    |False                 |
 
 
---Q2
+------------------------------ Q2
 
 SELECT 
 Person.province,
@@ -99,7 +99,7 @@ WHERE
 |QC      |Emera     |Cord      |1983-07-27 |ecord1a@spotify.com         |189-490-5426|Albanel            |False                 |
 |ON      |Stefan    |Megarry   |1974-07-16 |smegarry1d@va.gov           |530-661-4584|Innisfil           |False                 |
 
---Q3
+------------------------------ Q3
 
 SELECT VaccinationFacility.facilityID, VaccinationFacility.name, VaccinationFacility.address,phoneNumber, 
 VaccinationFacility.type, VaccinationFacility.capacity, 
@@ -136,7 +136,8 @@ GROUP BY Person.firstName, Person.lastName ;
 |Twinder Gym  |Ivonne   |Scoggins|1974-12-15 |212-447-2564|1014 Glendale Hill     |Jamaica  |NY      |11470     |United States|iscoggins1@berkeley.edu|
 |Geba Services|Esdras   |Glisane |1939-03-12 |585-573-6237|30 La Follette Junction|Rochester|NY      |14614     |United States|eglisane8@mit.edu      |
 
---Q5
+------------------------------ Q5
+
 SELECT Person.firstName, Person.lastName
 FROM Person, PublicHealthWorker
 WHERE Person.pid = PublicHealthWorker.pid AND
@@ -148,10 +149,75 @@ WHERE Person.pid = PublicHealthWorker.pid AND
 |Ina      |Rockcliffe|
 |Jenna    |Marbles   |
 
---Q6
+------------------------------ Q6
+
+SELECT Person.pid, Person.firstName, Person.lastName, Person.dateOfBirth, 
+	(SELECT MAX(VaccineRecord.doseNumber) FROM VaccineRecord WHERE VaccineRecord.pid = Person.pid) AS numOfDoses,
+    (SELECT COUNT(InfectionHistory.pid) FROM InfectionHistory WHERE InfectionHistory.pid = Person.pid) AS numOfDiagnostics
+FROM Person, VaccineRecord
+WHERE (Person.pid NOT IN (SELECT VaccineRecord.pid FROM VaccineRecord)) OR
+	(Person.pid = VaccineRecord.pid AND
+		((SELECT MAX(VaccineRecord.doseNumber) FROM VaccineRecord WHERE VaccineRecord.pid = Person.pid)) = 1) OR
+    (Person.pid = VaccineRecord.pid AND
+		((SELECT MAX(VaccineRecord.doseNumber) FROM VaccineRecord WHERE VaccineRecord.pid = Person.pid)) = 2 AND
+		((SELECT COUNT(InfectionHistory.pid) FROM InfectionHistory WHERE InfectionHistory.pid = Person.pid)) = 1)
+GROUP BY Person.pid;
+
+|pid|firstName |lastName  |dateOfBirth|numOfDoses|numOfDiagnostics|
+|---|----------|----------|-----------|----------|----------------|
+|2  |Ivonne    |Scoggins  |1974-12-15 |2         |1               |
+|3  |Berni     |McConnal  |2012-09-26 |          |0               |
+|4  |Ina       |Rockcliffe|1982-08-09 |          |0               |
+|5  |Caritta   |Reynoldson|2016-11-30 |1         |1               |
+|7  |Odette    |Brogan    |2007-03-16 |2         |1               |
+|8  |Costanza  |Powe      |2019-10-11 |          |0               |
+|9  |Esdras    |Glisane   |1939-03-12 |1         |0               |
+|10 |Bianca    |Renoden   |2014-04-28 |          |0               |
+|11 |Juieta    |Raecroft  |2013-01-26 |          |0               |
+|12 |Toby      |Beccles   |1971-01-15 |          |0               |
+|13 |Vinny     |Menendez  |2019-10-01 |          |0               |
+|14 |Ad        |Bourbon   |1941-11-02 |          |1               |
+|15 |Floria    |Kmicicki  |2018-11-07 |          |0               |
+|16 |Mario     |Luetchford|1977-05-19 |          |1               |
+|17 |Corabel   |Pancoust  |2005-11-08 |          |0               |
+|18 |Arnold    |Popworth  |1995-06-18 |          |1               |
+|19 |Stacee    |Down      |1948-08-06 |          |1               |
+|20 |Meta      |Rumens    |1972-01-21 |          |0               |
+|21 |Aeriel    |Agates    |2018-12-27 |          |0               |
+|22 |Kate      |Bedle     |1984-05-23 |1         |0               |
+|23 |Rosina    |Saurat    |1971-02-24 |          |0               |
+|24 |Mignonne  |Trazzi    |1998-04-07 |          |0               |
+|25 |Maybelle  |Djordjevic|1980-06-13 |          |0               |
+|26 |Grady     |Luscott   |1944-04-01 |          |0               |
+|27 |Jobi      |Aymer     |1958-01-05 |          |0               |
+|28 |Carmencita|Marchetti |1942-03-13 |          |0               |
+|29 |Leonie    |Durgan    |1991-03-25 |          |1               |
+|30 |Rorke     |Gilvear   |2017-01-09 |          |0               |
+|31 |Levin     |Ellissen  |1936-02-28 |          |0               |
+|32 |Tobias    |Hubatsch  |2015-09-16 |          |0               |
+|33 |Keene     |Kauscher  |1996-02-19 |          |0               |
+|34 |Emory     |Sullivan  |1952-02-28 |          |0               |
+|35 |Nancee    |Haitlie   |1950-08-19 |          |0               |
+|36 |Merrill   |Veregan   |2017-08-13 |          |0               |
+|37 |Staffard  |Phidgin   |1968-07-20 |1         |0               |
+|38 |Lazaro    |Rama      |2012-09-23 |          |0               |
+|39 |Jermayne  |Gamblin   |2006-07-25 |          |0               |
+|40 |Danny     |Dennitts  |1990-02-24 |          |1               |
+|41 |Gareth    |Alvis     |1984-07-10 |1         |0               |
+|42 |Collete   |Molden    |1997-12-06 |          |1               |
+|43 |Hedi      |Colvin    |2004-02-12 |          |0               |
+|44 |Dayle     |Skade     |1979-07-18 |          |0               |
+|45 |Raddy     |Conaboy   |2005-03-16 |          |0               |
+|46 |Genna     |Reveland  |2013-03-23 |          |0               |
+|47 |Emera     |Cord      |1983-07-27 |          |0               |
+|48 |Adair     |Southerell|1939-10-22 |1         |0               |
+|49 |Binni     |Balmadier |1945-12-21 |          |0               |
+|50 |Stefan    |Megarry   |1974-07-16 |          |0               |
+|51 |Mark      |Baloney   |2018-12-01 |          |0               |
+|52 |Jenna     |Marbles   |1989-04-01 |          |0               |
 
 
--- Q7
+------------------------------ Q7
 
 SELECT  VaccineRecord.vaccineType , Vaccine.dateOfApproval, Vaccine.status, count(VaccineRecord.vaccineType)
 FROM Vaccine, VaccineRecord, VaccinationFacility
@@ -166,7 +232,7 @@ group by VaccineRecord.vaccineType ;
 |Moderna    |2020-10-12    |SAFE  |4                          |
 |Janssen    |2020-11-30    |SAFE  |5                          |
 
--- Q8
+------------------------------ Q8
 
 Select Person.pid, Person.firstName , Person.lastName , Count(VaccineRecord.nurseID)
 from Person, PublicHealthWorker, VaccineRecord, VaccinationFacility
@@ -183,7 +249,7 @@ GROUP BY VaccineRecord.nurseID ;
 |22 |Kate     |Bedle     |3                       |
 
 
--- Q9
+------------------------------ Q9
 
 SELECT city, COUNT(DISTINCT Person.pid)
 FROM Person, VaccineRecord
