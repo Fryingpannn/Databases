@@ -80,14 +80,14 @@ WHERE
 |province|firstName |lastName  |dateOfBirth|email                       |phoneNumber |city               |Infected With COVID-19|
 |--------|----------|----------|-----------|----------------------------|------------|-------------------|----------------------|
 |QC      |Ina       |Rockcliffe|1982-08-09 |irockcliffe3@devhub.com     |723-652-2891|Beloeil            |False                 |
-|QC      |Ad        |Bourbon   |1941-11-02 |abourbond@nsw.gov.au        |468-597-0544|L'Assomption       |True                  |
+|QC      |Ad        |Bourbon   |1941-11-02 |abourbond@nsw.gov.au        |468-597-0544|LAssomption       |True                  |
 |QC      |Mario     |Luetchford|1977-05-19 |mluetchfordf@etsy.com       |424-769-2421|Sainte-Thérèse     |True                  |
 |QC      |Arnold    |Popworth  |1995-06-18 |apopworthh@theatlantic.com  |408-902-1896|Bedford            |True                  |
 |ON      |Stacee    |Down      |1948-08-06 |sdowni@geocities.com        |587-787-9239|Oshawa             |True                  |
 |QC      |Meta      |Rumens    |1972-01-21 |mrumensj@godaddy.com        |439-979-5835|Kirkland           |False                 |
 |QC      |Rosina    |Saurat    |1971-02-24 |rsauratm@ftc.gov            |175-699-2481|Blainville         |False                 |
 |QC      |Mignonne  |Trazzi    |1998-04-07 |mtrazzin@si.edu             |675-818-0868|Cookshire-Eaton    |False                 |
-|QC      |Maybelle  |Djordjevic|1980-06-13 |mdjordjevico@tuttocitta.it  |925-882-3155|L'Épiphanie        |False                 |
+|QC      |Maybelle  |Djordjevic|1980-06-13 |mdjordjevico@tuttocitta.it  |925-882-3155|LÉpiphanie        |False                 |
 |ON      |Grady     |Luscott   |1944-04-01 |gluscottp@examiner.com      |440-323-4263|Collingwood        |False                 |
 |ON      |Jobi      |Aymer     |1958-01-05 |jaymerq@instagram.com       |136-361-2251|Petrolia           |False                 |
 |QC      |Carmencita|Marchetti |1942-03-13 |cmarchettir@unblog.fr       |403-858-1838|Cowansville        |False                 |
@@ -105,7 +105,7 @@ SELECT VaccinationFacility.facilityID, VaccinationFacility.name, VaccinationFaci
 VaccinationFacility.type, VaccinationFacility.capacity, 
 VaccinationFacility.webAddress
 FROM VaccinationFacility
-WHERE VaccinationFacility.province = "Quebec"
+WHERE VaccinationFacility.province = "Quebec";
 
 |facilityID|name                     |address               |phoneNumber |type             |capacity|webAddress        |
 |----------|-------------------------|----------------------|------------|-----------------|--------|------------------|
@@ -267,6 +267,9 @@ GROUP BY city;
 |Sainte-Anne-des-Plaines|1                         |
 |Sutton                 |1                         |
 
+
+------------------------------ SELECT * R; for all relationships are presented below
+
 SELECT * FROM AgeGroup 
 
 |groupNumber|minAge|maxAge|
@@ -314,7 +317,7 @@ SELECT * FROM Person
 |11 |Juieta    |Raecroft  |2013-01-26 |942-147-2251|0402 Dovetail Road        |Saint-Lin-Laurentides  |QC      |J5M       |Canada       |jraecrofta@geocities.com    |
 |12 |Toby      |Beccles   |1971-01-15 |518-555-8682|0886 Summerview Pass      |Schenectady            |NY      |12305     |United States|tbecclesb@weebly.com        |
 |13 |Vinny     |Menendez  |2019-10-01 |266-579-6215|2 Monica Court            |Lebel-sur-Quévillon    |QC      |N2A       |Canada       |vmenendezc@google.com       |
-|14 |Ad        |Bourbon   |1941-11-02 |468-597-0544|1479 Wayridge Junction    |L'Assomption           |QC      |J5W       |Canada       |abourbond@nsw.gov.au        |
+|14 |Ad        |Bourbon   |1941-11-02 |468-597-0544|1479 Wayridge Junction    |LAssomption           |QC      |J5W       |Canada       |abourbond@nsw.gov.au        |
 |15 |Floria    |Kmicicki  |2018-11-07 |771-504-8335|7 Chinook Place           |Omemee                 |ON      |V1E       |Canada       |fkmicickie@usnews.com       |
 |16 |Mario     |Luetchford|1977-05-19 |424-769-2421|6438 Monterey Hill        |Sainte-Thérèse         |QC      |J7G       |Canada       |mluetchfordf@etsy.com       |
 |17 |Corabel   |Pancoust  |2005-11-08 |902-849-2066|330 Kropf Pass            |Repentigny             |QC      |J6V       |Canada       |cpancoustg@elpais.com       |
@@ -325,7 +328,7 @@ SELECT * FROM Person
 |22 |Kate      |Bedle     |1984-05-23 |270-134-5216|69140 Loeprich Avenue     |Sainte-Anne-des-Plaines|QC      |J4X       |Canada       |kbedlel@comsenz.com         |
 |23 |Rosina    |Saurat    |1971-02-24 |175-699-2481|6329 Fordem Point         |Blainville             |QC      |J7J       |Canada       |rsauratm@ftc.gov            |
 |24 |Mignonne  |Trazzi    |1998-04-07 |675-818-0868|2003 Burrows Plaza        |Cookshire-Eaton        |QC      |M4C       |Canada       |mtrazzin@si.edu             |
-|25 |Maybelle  |Djordjevic|1980-06-13 |925-882-3155|0151 Carey Way            |L'Épiphanie            |QC      |J5X       |Canada       |mdjordjevico@tuttocitta.it  |
+|25 |Maybelle  |Djordjevic|1980-06-13 |925-882-3155|0151 Carey Way            |LÉpiphanie            |QC      |J5X       |Canada       |mdjordjevico@tuttocitta.it  |
 |26 |Grady     |Luscott   |1944-04-01 |440-323-4263|430 Lotheville Park       |Collingwood            |ON      |L9Y       |Canada       |gluscottp@examiner.com      |
 |27 |Jobi      |Aymer     |1958-01-05 |136-361-2251|58 Eliot Parkway          |Petrolia               |ON      |N0N       |Canada       |jaymerq@instagram.com       |
 |28 |Carmencita|Marchetti |1942-03-13 |403-858-1838|20982 Tennessee Center    |Cowansville            |QC      |J2K       |Canada       |cmarchettir@unblog.fr       |
