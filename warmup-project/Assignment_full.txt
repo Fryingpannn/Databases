@@ -2,11 +2,139 @@
 
 --Q1
 
+SELECT 
+Person.province,
+Person.firstName,
+Person.lastName, 
+Person.dateOfBirth,
+registeredPerson.medicareNumber,
+unregisteredPerson.PassportNumber,
+Person.email,
+Person.phoneNumber, 
+Person.city,
+VaccineRecord.vaccineDate,
+VaccineRecord.vaccineType,
+CASE
+	WHEN 
+    (
+		SELECT COUNT(InfectionHistory.pid) FROM InfectionHistory 
+		WHERE Person.pid=InfectionHistory.pid
+	) 
+		THEN 'True' 
+        ELSE 'False' 
+        END AS 'Infected With COVID-19'
+FROM Person
+LEFT JOIN registeredPerson ON Person.pid=registeredPerson.pid
+LEFT JOIN unregisteredPerson ON Person.pid=unregisteredPerson.pid
+INNER JOIN VaccineRecord
+ON Person.pid=VaccineRecord.pid
+WHERE 
+	TIMESTAMPDIFF(YEAR, Person.dateOfBirth, CURDATE())
+	BETWEEN (SELECT minAge FROM AgeGroup WHERE groupNumber=10) AND (SELECT maxAge FROM AgeGroup WHERE groupNumber=2);
+	
+	|province|firstName|lastName  |dateOfBirth|medicareNumber|PassportNumber|email                    |phoneNumber |city                   |vaccineDate|vaccineType|Infected With COVID-19|
+|--------|---------|----------|-----------|--------------|--------------|-------------------------|------------|-----------------------|-----------|-----------|----------------------|
+|ON      |Teddie   |Hardisty  |1979-12-23 |9897          |              |thardisty0@addtoany.com  |252-953-2301|Ajax                   |2021-05-03 |Pfizer     |False                 |
+|ON      |Teddie   |Hardisty  |1979-12-23 |9897          |              |thardisty0@addtoany.com  |252-953-2301|Ajax                   |2021-06-03 |Pfizer     |False                 |
+|NY      |Ivonne   |Scoggins  |1974-12-15 |              |352674        |iscoggins1@berkeley.edu  |212-447-2564|Jamaica                |2021-05-05 |Moderna    |True                  |
+|NY      |Ivonne   |Scoggins  |1974-12-15 |              |352674        |iscoggins1@berkeley.edu  |212-447-2564|Jamaica                |2021-06-05 |Moderna    |True                  |
+|QC      |Caritta  |Reynoldson|2016-11-30 |9393          |              |creynoldson4@gravatar.com|944-538-5862|Sutton                 |2021-05-03 |Pfizer     |True                  |
+|QC      |Aime     |Philps    |1971-04-28 |9519          |              |aphilps5@apple.com       |294-347-1916|Berthierville          |2021-06-03 |Pfizer     |False                 |
+|QC      |Aime     |Philps    |1971-04-28 |9519          |              |aphilps5@apple.com       |294-347-1916|Berthierville          |2021-07-03 |Pfizer     |False                 |
+|QC      |Odette   |Brogan    |2007-03-16 |9714          |              |obrogan6@drupal.org      |614-342-8156|Saint-Eustache         |2021-06-03 |Moderna    |True                  |
+|QC      |Odette   |Brogan    |2007-03-16 |9714          |              |obrogan6@drupal.org      |614-342-8156|Saint-Eustache         |2021-07-03 |Moderna    |True                  |
+|QC      |Kate     |Bedle     |1984-05-23 |9519          |              |kbedlel@comsenz.com      |270-134-5216|Sainte-Anne-des-Plaines|2021-04-28 |Janssen    |False                 |
+|QC      |Staffard |Phidgin   |1968-07-20 |9538          |              |sphidgin10@youtube.com   |484-164-2203|Charlemagne            |2021-04-29 |Janssen    |False                 |
+|QC      |Gareth   |Alvis     |1984-07-10 |9862          |              |galvis14@php.net         |760-293-5276|Saint-Rémi             |2021-04-29 |Janssen    |False                 |
+
+
 --Q2
+
+SELECT 
+Person.province,
+Person.firstName,
+Person.lastName, 
+Person.dateOfBirth,
+Person.email,
+Person.phoneNumber,
+Person.city,
+CASE
+	WHEN 
+    (
+		SELECT COUNT(InfectionHistory.pid) FROM InfectionHistory 
+		WHERE Person.pid=InfectionHistory.pid
+	) 
+		THEN 'True' 
+        ELSE 'False' 
+        END AS 'Infected With COVID-19'
+FROM Person
+INNER JOIN registeredPerson ON Person.pid=registeredPerson.pid
+WHERE 
+	TIMESTAMPDIFF(YEAR, Person.dateOfBirth, CURDATE()) >= (SELECT minAge FROM AgeGroup WHERE groupNumber=7) AND
+    NOT EXISTS(
+		SELECT 1
+		FROM VaccineRecord
+		WHERE VaccineRecord.pid = Person.pid
+	);
+
+|province|firstName |lastName  |dateOfBirth|email                       |phoneNumber |city               |Infected With COVID-19|
+|--------|----------|----------|-----------|----------------------------|------------|-------------------|----------------------|
+|QC      |Ina       |Rockcliffe|1982-08-09 |irockcliffe3@devhub.com     |723-652-2891|Beloeil            |False                 |
+|QC      |Ad        |Bourbon   |1941-11-02 |abourbond@nsw.gov.au        |468-597-0544|L'Assomption       |True                  |
+|QC      |Mario     |Luetchford|1977-05-19 |mluetchfordf@etsy.com       |424-769-2421|Sainte-Thérèse     |True                  |
+|QC      |Arnold    |Popworth  |1995-06-18 |apopworthh@theatlantic.com  |408-902-1896|Bedford            |True                  |
+|ON      |Stacee    |Down      |1948-08-06 |sdowni@geocities.com        |587-787-9239|Oshawa             |True                  |
+|QC      |Meta      |Rumens    |1972-01-21 |mrumensj@godaddy.com        |439-979-5835|Kirkland           |False                 |
+|QC      |Rosina    |Saurat    |1971-02-24 |rsauratm@ftc.gov            |175-699-2481|Blainville         |False                 |
+|QC      |Mignonne  |Trazzi    |1998-04-07 |mtrazzin@si.edu             |675-818-0868|Cookshire-Eaton    |False                 |
+|QC      |Maybelle  |Djordjevic|1980-06-13 |mdjordjevico@tuttocitta.it  |925-882-3155|L'Épiphanie        |False                 |
+|ON      |Grady     |Luscott   |1944-04-01 |gluscottp@examiner.com      |440-323-4263|Collingwood        |False                 |
+|ON      |Jobi      |Aymer     |1958-01-05 |jaymerq@instagram.com       |136-361-2251|Petrolia           |False                 |
+|QC      |Carmencita|Marchetti |1942-03-13 |cmarchettir@unblog.fr       |403-858-1838|Cowansville        |False                 |
+|ON      |Leonie    |Durgan    |1991-03-25 |ldurgans@wunderground.com   |436-700-4170|Lambton Shores     |True                  |
+|QC      |Levin     |Ellissen  |1936-02-28 |lellissenu@msu.edu          |418-818-0900|Dollard-Des Ormeaux|False                 |
+|QC      |Emory     |Sullivan  |1952-02-28 |esullivanx@independent.co.uk|341-738-3301|Trois-Rivières     |False                 |
+|ON      |Collete   |Molden    |1997-12-06 |cmolden15@eventbrite.com    |295-377-6242|Petrolia           |True                  |
+|ON      |Dayle     |Skade     |1979-07-18 |dskade17@ibm.com            |959-929-6654|Oakville           |False                 |
+|QC      |Emera     |Cord      |1983-07-27 |ecord1a@spotify.com         |189-490-5426|Albanel            |False                 |
+|ON      |Stefan    |Megarry   |1974-07-16 |smegarry1d@va.gov           |530-661-4584|Innisfil           |False                 |
 
 --Q3
 
+SELECT VaccinationFacility.facilityID, VaccinationFacility.name, VaccinationFacility.address,phoneNumber, 
+VaccinationFacility.type, VaccinationFacility.capacity, 
+VaccinationFacility.webAddress
+FROM VaccinationFacility
+WHERE VaccinationFacility.province = "Quebec"
+
+|facilityID|name                     |address               |phoneNumber |type             |capacity|webAddress        |
+|----------|-------------------------|----------------------|------------|-----------------|--------|------------------|
+|107       |Twinder Gym              |0 Brickson Park Center|166-586-7643|Gym              |181     |webeden.co.uk     |
+|108       |Geba Services            |9169 Orin Park        |294-965-6593|Consumer Services|184     |domainmarket.com  |
+|113       |Jabbercube Medical Center|7 Mandrake Avenue     |645-781-5880|Health Care      |193     |opensource.org    |
+|140       |Pixonyx Energy           |04 Loeprich Hill      |324-321-9611|Energy           |171     |webeden.co.uk     |
+|174       |Trudoo School Of Finance |6279 Rusk Circle      |188-709-3031|School           |55      |msn.com           |
+|179       |Brainsphere Services     |904 Dayton Pass       |665-247-7100|Consumer Services|87      |gmpg.org          |
+|186       |Tazzy Tech               |9 Huxley Crossing     |303-328-5056|Mall             |221     |ebay.com          |
+|188       |Gigaclub Consulting      |7 East Lane           |198-815-3374|Finance          |98      |domainmarket.com  |
+|193       |Fivespan Finance         |4853 Schlimgen Alley  |260-656-5827|Finance          |184     |huffingtonpost.com|
+
 --Q4
+
+SELECT VaccineRecord.location, Person.firstName, Person.lastName, Person.dateOfBirth,
+Person.phoneNumber, Person.address, Person.city, Person.province,
+Person.postalCode, Person.citizenship, Person.email
+FROM Person, VaccinationFacility, unregisteredPerson, VaccineRecord
+WHERE Person.pid = unregisteredPerson.pid AND
+Person.pid = VaccineRecord.pid AND 
+VaccineRecord.location = VaccinationFacility.name AND
+VaccinationFacility.province = "Quebec"
+GROUP BY Person.firstName, Person.lastName ;
+
+|location     |firstName|lastName|dateOfBirth|phoneNumber |address                |city     |province|postalCode|citizenship  |email                  |
+|-------------|---------|--------|-----------|------------|-----------------------|---------|--------|----------|-------------|-----------------------|
+|Twinder Gym  |Ivonne   |Scoggins|1974-12-15 |212-447-2564|1014 Glendale Hill     |Jamaica  |NY      |11470     |United States|iscoggins1@berkeley.edu|
+|Geba Services|Esdras   |Glisane |1939-03-12 |585-573-6237|30 La Follette Junction|Rochester|NY      |14614     |United States|eglisane8@mit.edu      |
 
 --Q5
 
