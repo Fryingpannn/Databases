@@ -89,13 +89,13 @@ CREATE TABLE VaccineRecord (
 	doseNumber INTEGER,
 	vaccineType VARCHAR(30),
 	lotNumber INTEGER,
-	PRIMARY KEY (pid, nurseID, VaccineType),
+	PRIMARY KEY (pid, nurseID, VaccineType, vaccineDate),
 	FOREIGN KEY (pid) REFERENCES Person(pid),
 	FOREIGN KEY (nurseID) REFERENCES PublicHealthWorker(pid),
 	Foreign key (VaccineType) References Vaccine (vaccineType)
 );
 
-
+drop table VaccineRecord;
 CREATE TABLE Vaccine (
 	vaccineType VARCHAR(30) PRIMARY KEY,
 	status CHAR(9),
@@ -151,4 +151,38 @@ CREATE TABLE VaccinationFacility (
 	webAddress VARCHAR(80),
 	primary key (facilityID, postalCode),
 	Foreign key (postalCode) references Area(postalCode)
+);
+
+Create table OperatingHours(
+	facilityID Integer, 
+	dayOfTheWeek Integer, 
+	openingTime Integer, 
+	closingTime Integer,
+	primary key (facilityID),
+	Foreign key (facilityID) references VaccinationFacility (facilityID)
+);
+
+Create table BookingSlots(
+	pID Integer, 
+	facilityID Integer, 
+	typeOfAppointment Integer,
+	DayOfAppointment Integer,
+	timeOfAppointment Integer,
+	DoseNumber Integer,
+	primary key (pID, facilityID, timeOfAppointment),
+	foreign key (facilityID) references VaccinationFacility (facilityID)
+);
+
+Create table Shifts(
+	pid Integer, 
+	facilityID Integer,
+	SINNumber Integer,
+	eID Integer,
+	managerID Integer,
+	dayOfTheWeek Integer,
+	startHour Integer,
+	endHour Integer,
+	primary key (facilityID, pid, SINNumber, dayOfTheWeek),
+	Foreign key (pid, SINNumber) references PublicHealthWorker (pid, SINNumber),
+	Foreign key (facilityID) references VaccinationFacility (facilityID)
 );
