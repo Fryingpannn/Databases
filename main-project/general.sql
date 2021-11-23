@@ -162,14 +162,15 @@ Create table OperatingHours(
 	Foreign key (facilityID) references VaccinationFacility (facilityID)
 );
 
+
 Create table BookingSlots(
 	pID Integer, 
 	facilityID Integer, 
 	typeOfAppointment Integer,
-	DayOfAppointment Integer,
-	timeOfAppointment Integer,
+	DayOfAppointment Date,
+	timeOfAppointment Time,
 	DoseNumber Integer,
-	primary key (pID, facilityID, timeOfAppointment),
+	primary key (pID, facilityID, DoseNumber),
 	foreign key (facilityID) references VaccinationFacility (facilityID)
 );
 
@@ -180,8 +181,8 @@ Create table Shifts(
 	eID Integer,
 	managerID Integer,
 	dayOfTheWeek Integer,
-	startHour Integer,
-	endHour Integer,
+	startHour Time,
+	endHour Time,
 	primary key (facilityID, pid, SINNumber, dayOfTheWeek),
 	Foreign key (pid, SINNumber) references PublicHealthWorker (pid, SINNumber),
 	Foreign key (facilityID) references VaccinationFacility (facilityID)
