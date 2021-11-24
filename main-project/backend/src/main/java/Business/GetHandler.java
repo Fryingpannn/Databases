@@ -14,6 +14,7 @@ public class GetHandler {
         Person person = Database.getInstance().getPerson(req.getParameter("pid"));
 
         JSONObject toReturn = new JSONObject(person);
+        // TODO: change this to return toReturn instead. This is just for test. Need database connection fixed.
         resp.getWriter().println(toReturn);
     }
 
