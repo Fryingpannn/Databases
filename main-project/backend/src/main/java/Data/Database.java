@@ -10,7 +10,7 @@ public class Database {
 
     public static Database getInstance() throws SQLException, ClassNotFoundException {
         if(connection == null || instance == null) {
-            //Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(String.format(Config.DB_STRING.value.toString(), Config.DB_PORT.value.toString())
                     , Config.DB_USERNAME.value.toString(), Config.DB_PW.value.toString());
             instance = new Database();
@@ -18,6 +18,7 @@ public class Database {
         return instance;
     }
 
+    // returns true if db connection is valid, else false.
     public boolean isValid() throws SQLException {
         return connection.isValid(5);
     }
