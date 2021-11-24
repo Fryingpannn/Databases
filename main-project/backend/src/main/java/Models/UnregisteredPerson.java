@@ -3,6 +3,8 @@ package Models;
 public class UnregisteredPerson extends Person {
     private String passportNumber;
 
+    public UnregisteredPerson() {}
+
     public String getPassportNumber() {
         return passportNumber;
     }

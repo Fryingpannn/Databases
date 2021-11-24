@@ -13,6 +13,8 @@ public class VaccinationFacility {
     private String address;
     private String webAddress;
 
+    public VaccinationFacility() {}
+
     public VaccinationFacility(String postalCode, String name, String typeOf, String category, String capacity, String phoneNumber, String phoneNUmber, String address, String webAddress) {
         this.postalCode = postalCode;
         this.name = name;

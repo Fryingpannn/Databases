@@ -5,6 +5,8 @@ public class VaccineType {
     private String dateOfApproval;
     private String dateOfSuspension;
 
+    public VaccineType() {}
+
     public VaccineType(String value) {
         this.value = value;
     }

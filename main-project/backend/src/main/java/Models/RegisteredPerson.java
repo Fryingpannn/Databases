@@ -5,6 +5,8 @@ public class RegisteredPerson extends Person {
     private String medicareDateOfIssue;
     private String medicareDateOfExpiry;
 
+    public RegisteredPerson() {}
+
     public String getMedicareNumber() {
         return medicareNumber;
     }

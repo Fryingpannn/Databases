@@ -1,8 +1,11 @@
 package Models;
+
+import java.io.Serializable;
+
 /*
     Person class which is the parent of other user types.
  */
-public class Person {
+public class Person implements Serializable {
     private String pid;
     private String postalCode;
 
@@ -13,6 +16,10 @@ public class Person {
     private String phoneNumber;
     private String address;
     private String citizenship;
+    private String email;
+
+    private String city;
+    private String province;
 
     public Person() {}
 
@@ -79,6 +86,14 @@ public class Person {
         return phoneNumber;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
@@ -99,6 +114,22 @@ public class Person {
         this.citizenship = citizenship;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
     @Override
     public String toString() {
         return "Person{" +
@@ -111,6 +142,9 @@ public class Person {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", address='" + address + '\'' +
                 ", citizenship='" + citizenship + '\'' +
+                ", email='" + email + '\'' +
+                ", city='" + city + '\'' +
+                ", province='" + province + '\'' +
                 '}';
     }
 }

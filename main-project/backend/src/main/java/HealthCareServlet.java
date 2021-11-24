@@ -1,3 +1,4 @@
+import Business.GetHandler;
 import Data.Database;
 
 import javax.servlet.ServletException;
@@ -11,21 +12,66 @@ import java.sql.SQLException;
 
 @WebServlet(
         urlPatterns = {
-                "/"     // get
+                "/",     // home test
+                "/person", // get, create, update, delete
+                "/healthworker", // get, create, update, delete
+                "/healthfacility", // get, create, update, delete
+                "/vaccinetype", // get, create, update, delete
         }
 )
 public class HealthCareServlet extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
-        try(PrintWriter out = resp.getWriter()) {
+    public String getRequestType(HttpServletRequest req) {
+        return req.getServletPath().replace("/", "").strip().trim().toLowerCase();
+    }
 
-            out.println("<h1>LET'S FCKING GOOOOOOOO</h1>");
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String type = getRequestType(req);
+        System.out.println("========================================================================");
+        try {
+            switch (type) {
+                case "/":
+                    defaultHome(resp, false);
+                case "person":
+                    GetHandler.getPerson(req, resp);
+                    break;
+                case "healthworker":
+                    GetHandler.getHealthWorker(req, resp);
+                    break;
+                case "healthfacility":
+                    GetHandler.getHealthFacility(req, resp);
+                    break;
+                case "vaccinetype":
+                    GetHandler.getVaccineType(req, resp);
+                    break;
+                default:
+                    defaultHome(resp, true);
+            }
+        }
+        catch (ClassNotFoundException | SQLException e) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
+        }
+
+        //validateDB();
+    }
+
+    private void defaultHome(HttpServletResponse resp, Boolean defaultPage) {
+        try(PrintWriter out = resp.getWriter()) {
+            if (defaultPage) {
+                System.out.println("================== Backend connected ==================");
+                out.println("<h1>LET'S GOOOOOO!!!!!!</h1>");
+            }
+            else {
+                out.println("<h1>Wrong endpoint.</h1>");
+            }
         }
         catch (IOException e) {
-
+            resp.setStatus(500);
         }
+    }
 
+    private void validateDB() {
         try {
             Database test = Database.getInstance();
             if (test.isValid()) {
@@ -34,9 +80,9 @@ public class HealthCareServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
+            System.out.println("ERROR CONNECTING TO DATABASE ===============================");
             e.printStackTrace();
         }
-
     }
 
 }
