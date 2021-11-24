@@ -1,3 +1,5 @@
+
+
 CREATE TABLE Person (
 	pid INTEGER,
     firstName VARCHAR(30),
@@ -7,19 +9,13 @@ CREATE TABLE Person (
     phoneNumber CHAR(15),
     address VARCHAR(255),
     postalCode VARCHAR(15),
+    city Varchar (100),
+    provinceOrState VarChar(50),
     citizenship VARCHAR(20),
     email VARCHAR(255),
-    primary key (pid, postalCode),
-    Foreign key (postalCode) references Area (postalCode)
+    primary key (pid)
 );
 
-
-CREATE TABLE Area(
-	    postalCode VARCHAR(15), 
-	    city VARCHAR(15),
-	    province VARCHAR(15),
-	    primary key (postalcode),
-);
 
 CREATE TABLE unregisteredPerson (
 	pid INTEGER PRIMARY KEY,
@@ -63,8 +59,8 @@ create table BelongToGroup(
 
 );
 
-Create Table VaccineGroup(
-	currentGroup INTEGER,
+
+Create Table ProvinceList(
 	province Varchar(50),
 	primary key (province)
 );
@@ -95,7 +91,7 @@ CREATE TABLE VaccineRecord (
 	Foreign key (VaccineType) References Vaccine (vaccineType)
 );
 
-drop table VaccineRecord;
+
 CREATE TABLE Vaccine (
 	vaccineType VARCHAR(30) PRIMARY KEY,
 	status CHAR(9),
@@ -108,7 +104,7 @@ CREATE TABLE PublicHealthWorker (
 	SINNumber INTEGER,
 	occupation varchar(50),
 	primary key (pid, SINNumber),
-	FOREIGN KEY (pid) REFERENCES Person (pid)
+	FOREIGN KEY (pid) REFERENCES registeredPerson (pid)
 );
 
 
@@ -146,11 +142,12 @@ CREATE TABLE VaccinationFacility (
 	category Varchar(50),
 	capacity INTEGER,
 	postalCode VARCHAR(15),
-	phoneNumber INTEGER,
+	city Varchar(100),
+	province VarChar(50),
+	phoneNumber varchar(50),
 	address VARCHAR(255),
 	webAddress VARCHAR(80),
-	primary key (facilityID, postalCode),
-	Foreign key (postalCode) references Area(postalCode)
+	primary key (facilityID)
 );
 
 Create table OperatingHours(
