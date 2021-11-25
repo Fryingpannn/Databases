@@ -28,7 +28,6 @@ public class HealthCareServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String type = getRequestType(req);
-        System.out.println("========================================================================");
         try {
             switch (type) {
                 case "/":
@@ -49,8 +48,9 @@ public class HealthCareServlet extends HttpServlet {
                     defaultHome(resp, true);
             }
         }
-        catch (ClassNotFoundException | SQLException e) {
+        catch (Exception e) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
+            e.printStackTrace();
         }
 
         //validateDB();

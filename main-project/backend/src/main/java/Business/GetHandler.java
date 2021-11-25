@@ -1,6 +1,7 @@
 package Business;
 
 import Data.Database;
+import Exceptions.IncorrectParameterException;
 import Models.Person;
 import org.json.JSONObject;
 
@@ -10,7 +11,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class GetHandler {
-    public static void getPerson(HttpServletRequest req, HttpServletResponse resp) throws ClassNotFoundException, SQLException, IOException {
+    public static void getPerson(HttpServletRequest req, HttpServletResponse resp) throws ClassNotFoundException, SQLException, IOException, IncorrectParameterException {
+        String pid = req.getParameter("pid");
+        if(pid == null) {
+            throw new IncorrectParameterException("Missing \"pid\" parameter.");
+        }
         Person person = Database.getInstance().getPerson(req.getParameter("pid"));
 
         JSONObject toReturn = new JSONObject(person);

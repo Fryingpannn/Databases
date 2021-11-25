@@ -50,6 +50,7 @@
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.27" />
           <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.11.4" />
           <element id="library" level="project" name="Maven: org.json:json:20210307" />
+          <element id="library" level="project" name="Maven: com.jcraft:jsch:0.1.55" />
         </element>
       </element>
       <element id="directory" name="META-INF">
