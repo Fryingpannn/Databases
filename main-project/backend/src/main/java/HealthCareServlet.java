@@ -83,7 +83,7 @@ public class HealthCareServlet extends HttpServlet {
             }
         }
         catch (Exception e) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             e.printStackTrace();
         }
     }
@@ -96,6 +96,13 @@ public class HealthCareServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+    }
+
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Methods", "*");
+        response.addHeader("Access-Control-Allow-Headers", "*");
     }
 
     private void defaultHome(HttpServletResponse resp, Boolean defaultPage) {

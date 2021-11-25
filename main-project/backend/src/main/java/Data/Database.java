@@ -6,6 +6,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import org.jboss.weld.security.AbstractReflectionAction;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -17,6 +18,8 @@ public class Database {
 
     private static final String SELECT_PERSON_QUERY = "SELECT * FROM Person WHERE pid = ?";
     private static final String SELECT_ALL_PEOPLE = "SELECT * FROM Person";
+
+    private static final String CREATE_PERSON_QUERY = "insert into Person (firstName, middleInitial, lastName, dateOfBirth, phoneNumber, address, postalCode, city, provinceOrState, citizenship, email) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * Used to interact with the DB.
@@ -109,6 +112,38 @@ public class Database {
         }
         statement.close();
         return people;
+    }
+
+    /**
+     Creates one person
+     @param person
+     @returns Person object
+     */
+    public synchronized void createPerson(Person person) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(CREATE_PERSON_QUERY, Statement.RETURN_GENERATED_KEYS);
+        statement.setString(1, person.getFirstName());
+        statement.setString(2, person.getMiddleInitial());
+        statement.setString(3, person.getLastName());
+        statement.setString(4, person.getDateOfBirth());
+        statement.setString(5, person.getPhoneNumber());
+        statement.setString(6, person.getAddress());
+        statement.setString(7, person.getPostalCode());
+        statement.setString(8, person.getCity());
+        statement.setString(9, person.getProvince());
+        statement.setString(10, person.getCitizenship());
+        statement.setString(11, person.getEmail());
+        statement.executeUpdate();
+
+        try (ResultSet rs = statement.getGeneratedKeys()) {
+            String pid = "-1"; // if fail
+            if (rs.next()) {
+                pid = Integer.toString(rs.getInt(1));
+                System.out.println("New person pid is: " + pid);
+            }
+            person.setPid(pid);
+        }
+
+        statement.close();
     }
 
     /**

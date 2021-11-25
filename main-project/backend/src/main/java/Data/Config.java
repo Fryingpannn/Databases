@@ -5,7 +5,7 @@ public enum Config {
 
     DB_PORT("db_port", "The port through which to connect to the database", "3306"),
 
-    DB_PW("db_pw", "PW for DB", "INSERT PW HERE DON'T COMMIT"),
+    DB_PW("db_pw", "PW for DB", "hUp3rW4H"),
 
     DB_USERNAME("db_username", "User for local DB.", "zmc353_2"),
 
@@ -15,9 +15,9 @@ public enum Config {
 
     SSH_HOST("ssh_host", "SSH Host URL", "login.encs.concordia.ca"),
 
-    SSH_USER("ssh_user", "Your personal ENCS username", "INSERT USER HERE DON'T COMMIT"),
+    SSH_USER("ssh_user", "Your personal ENCS username", "p_atthew"),
 
-    SSH_PW("ssw_pw", "Your personal ENCS pw", "INSERT PW HERE DON'T COMMIT"),
+    SSH_PW("ssw_pw", "Your personal ENCS pw", "Matt12345678$"),
 
     MYSQL_HOST("mysql_host", "MySQL Host URL", "zmc353.encs.concordia.ca"),;
 

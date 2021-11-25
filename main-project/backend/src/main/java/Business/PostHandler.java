@@ -15,8 +15,14 @@ public class PostHandler {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public static void postPerson(HttpServletRequest req, HttpServletResponse resp) throws ClassNotFoundException, SQLException, IOException, IncorrectParameterException {
+        // map JSON body to a person object and create it in the DB
         Person person = mapper.readValue(req.getReader(), Person.class);
-        resp.getWriter().println(person.toString());
+        Database.getInstance().createPerson(person);
+        System.out.println("Created Person: " + person);
+
+        // return the newly created object
+        resp.getWriter().println(new JSONObject(person));
+        resp.setStatus(HttpServletResponse.SC_CREATED);
     }
 
     public static void postHealthWorker(HttpServletRequest req, HttpServletResponse resp) {
