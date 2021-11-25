@@ -12,10 +12,12 @@ public class VaccinationFacility {
     private String phoneNUmber;
     private String address;
     private String webAddress;
+    private String city;
+    private String province;
 
     public VaccinationFacility() {}
 
-    public VaccinationFacility(String postalCode, String name, String typeOf, String category, String capacity, String phoneNumber, String phoneNUmber, String address, String webAddress) {
+    public VaccinationFacility(String postalCode, String name, String typeOf, String category, String capacity, String phoneNumber, String phoneNUmber, String address, String webAddress, String city, String province) {
         this.postalCode = postalCode;
         this.name = name;
         this.typeOf = typeOf;
@@ -25,6 +27,8 @@ public class VaccinationFacility {
         this.phoneNUmber = phoneNUmber;
         this.address = address;
         this.webAddress = webAddress;
+        this.city = city;
+        this.province = province;
     }
 
     public String getFacilityID() {
@@ -106,4 +110,12 @@ public class VaccinationFacility {
     public void setWebAddress(String webAddress) {
         this.webAddress = webAddress;
     }
+
+    public String getCity() { return city; }
+
+    public void setCity (String city) { this.city = city; }
+
+    public String getProvince() { return province; }
+
+    public void setProvince (String province) { this.province = province; }
 }

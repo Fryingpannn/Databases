@@ -20,6 +20,21 @@ public class PublicHealthWorker extends Person {
         this.occupation = occupation;
     }
 
+    public PublicHealthWorker(Person person){
+        setPid(person.getPid());
+        setFirstName(person.getFirstName());
+        setMiddleInitial(person.getMiddleInitial());
+        setLastName(person.getLastName());
+        setDateOfBirth(person.getDateOfBirth());
+        setPhoneNumber(person.getPhoneNumber());
+        setAddress(person.getAddress());
+        setPostalCode(person.getPostalCode());
+        setCity(person.getCity());
+        setProvince(person.getProvince());
+        setCitizenship(person.getCitizenship());
+        setEmail(person.getEmail());
+    }
+
     public String getNurseID() {
         return nurseID;
     }

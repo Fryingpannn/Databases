@@ -2,7 +2,7 @@ package Business;
 
 import Data.Database;
 import Exceptions.IncorrectParameterException;
-import Models.Person;
+import Models.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -39,15 +39,61 @@ public class GetHandler {
         }
     }
 
-    public static void getHealthWorker(HttpServletRequest req, HttpServletResponse resp) {
+    public static void getHealthWorker(HttpServletRequest req, HttpServletResponse resp) throws IncorrectParameterException, SQLException, ClassNotFoundException, IOException {
+        String pid = req.getParameter("pid");
+        if (pid == null) {
+            throw new IncorrectParameterException("Missing \"pid\" parameter.");
+        }
+        PublicHealthWorker publicHealthWorker = Database.getInstance().getPublicHealthWorker(pid);
 
+        resp.getWriter().println(new JSONObject(publicHealthWorker));
+        resp.setStatus(HttpServletResponse.SC_OK);
     }
 
-    public static void getHealthFacility(HttpServletRequest req, HttpServletResponse resp) {
+    public static void getHealthFacility(HttpServletRequest req, HttpServletResponse resp) throws IncorrectParameterException, SQLException, ClassNotFoundException, IOException {
+        String facilityID = req.getParameter("facilityID");
+        if (facilityID == null) {
+            throw new IncorrectParameterException("Missing \"facilityID\" parameter.");
+        }
+        VaccinationFacility vaccinationFacility = Database.getInstance().getVaccinationFacility(facilityID);
 
+        resp.getWriter().println(new JSONObject(vaccinationFacility));
+        resp.setStatus(HttpServletResponse.SC_OK);
     }
 
-    public static void getVaccineType(HttpServletRequest req, HttpServletResponse resp) {
+    public static void getVaccineType(HttpServletRequest req, HttpServletResponse resp) throws IncorrectParameterException, SQLException, ClassNotFoundException, IOException {
+        String vaccineType = req.getParameter("vaccineType");
+        if (vaccineType == null) {
+            throw new IncorrectParameterException("Missing \"vaccineType\" parameter.");
+        }
+        VaccineType vaccine = Database.getInstance().getVaccineType(vaccineType);
 
+        resp.getWriter().println(new JSONObject(vaccine));
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    public static void getAgeGroup(HttpServletRequest req, HttpServletResponse resp) throws IncorrectParameterException, SQLException, ClassNotFoundException, IOException {
+        String groupNumber = req.getParameter("groupNumber");
+        if (groupNumber == null) {
+            throw new IncorrectParameterException("Missing \"groupNumber\" parameter.");
+        }
+        AgeGroup ageGroup = Database.getInstance().getAgeGroup(groupNumber);
+
+        resp.getWriter().println(new JSONObject(ageGroup));
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    public static void getBookingSlot(HttpServletRequest req, HttpServletResponse resp) throws IncorrectParameterException, SQLException, ClassNotFoundException, IOException {
+        String pid = req.getParameter("pid");
+        String doseNumber = req.getParameter("doseNumber");
+        if (pid == null) {
+            throw new IncorrectParameterException("Missing \"pid\" parameter.");
+        } else if(doseNumber == null){
+            throw new IncorrectParameterException("Missing \"doseNumber\" parameter.");
+        }
+        BookingSlot bookingSlot = Database.getInstance().getBookingSlot(pid, doseNumber);
+
+        resp.getWriter().println(new JSONObject(bookingSlot));
+        resp.setStatus(HttpServletResponse.SC_OK);
     }
 }
