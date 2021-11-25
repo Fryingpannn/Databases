@@ -1,28 +1,38 @@
 package Models;
 
 public class VaccineType {
-    private String value;
+    private String vaccineType;
+    private String status;
     private String dateOfApproval;
     private String dateOfSuspension;
 
     public VaccineType() {}
 
-    public VaccineType(String value) {
-        this.value = value;
+    public VaccineType(String vaccineType) {
+        this.vaccineType = vaccineType;
     }
 
-    public VaccineType(String value, String dateOfApproval, String dateOfSuspension) {
-        this.value = value;
+    public VaccineType(String vaccineType, String status, String dateOfApproval, String dateOfSuspension) {
+        this.vaccineType = vaccineType;
+        this.status = status;
         this.dateOfApproval = dateOfApproval;
         this.dateOfSuspension = dateOfSuspension;
     }
 
-    public String getValue() {
-        return value;
+    public String getVaccineType() {
+        return vaccineType;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setVaccineType(String vaccineType) {
+        this.vaccineType = vaccineType;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getDateOfApproval() {

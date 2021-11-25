@@ -19,6 +19,8 @@ import java.sql.SQLException;
                 "/healthworker", // get, create, update, delete
                 "/healthfacility", // get, create, update, delete
                 "/vaccinetype", // get, create, update, delete
+                "/agegroup", // get, create, update, delete
+                "/bookingslot", // get, create, update, delete
         }
 )
 public class HealthCareServlet extends HttpServlet {
@@ -45,6 +47,12 @@ public class HealthCareServlet extends HttpServlet {
                     break;
                 case "vaccinetype":
                     GetHandler.getVaccineType(req, resp);
+                    break;
+                case "agegroup":
+                    GetHandler.getAgeGroup(req, resp);
+                    break;
+                case "bookingslot":
+                    GetHandler.getBookingSlot(req, resp);
                     break;
                 case "dbtest":
                     validateDB(resp);
