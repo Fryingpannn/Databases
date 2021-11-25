@@ -4,8 +4,10 @@ import Models.Person;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import org.jboss.weld.security.AbstractReflectionAction;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Database {
     private static Session session;
@@ -14,6 +16,7 @@ public class Database {
     private static String assigned_port;
 
     private static final String SELECT_PERSON_QUERY = "SELECT * FROM Person WHERE pid = ?";
+    private static final String SELECT_ALL_PEOPLE = "SELECT * FROM Person";
 
     /**
      * Used to interact with the DB.
@@ -83,6 +86,29 @@ public class Database {
         }
         statement.close();
         return person;
+    }
+
+    /**
+     Retrieves all people
+     @returns Person object
+     */
+    public synchronized ArrayList<Person> getAllPeople() throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(SELECT_ALL_PEOPLE);
+
+        ArrayList<Person> people = new ArrayList<Person>();
+        try (ResultSet rs = statement.executeQuery()) {
+            while(rs.next()) {
+                Person person = setupPerson(rs, new Person());
+                people.add(person);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.print("ERROR RETRIEVING PERSON");
+            throw e;
+        }
+        statement.close();
+        return people;
     }
 
     /**
