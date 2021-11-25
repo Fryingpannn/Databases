@@ -17,14 +17,14 @@ CREATE TABLE Person (
 );
 
 
-CREATE TABLE unregisteredPerson (
+CREATE TABLE UnregisteredPerson (
 	pid INTEGER PRIMARY KEY,
 	PassportNumber INTEGER NOT NULL,
 	FOREIGN KEY (pid) REFERENCES Person(pid)
 );
 
 
-CREATE TABLE registeredPerson(
+CREATE TABLE RegisteredPerson(
 	pid INTEGER PRIMARY KEY,
 	medicareNumber INTEGER NOT NULL,
 	medicareDateOfIssue DATE NOT NULL,
@@ -79,12 +79,12 @@ Create Table Eligibility(
 CREATE TABLE VaccineRecord (
 	nurseID INTEGER,
 	pid INTEGER,
-	location VARCHAR(30),
+	location VARCHAR(255),
 	country VARCHAR(30),
 	vaccineDate DATE,
 	doseNumber INTEGER,
 	vaccineType VARCHAR(30),
-	lotNumber INTEGER,
+	lotNumber Varchar(50),
 	PRIMARY KEY (pid, nurseID, VaccineType, vaccineDate),
 	FOREIGN KEY (pid) REFERENCES Person(pid),
 	FOREIGN KEY (nurseID) REFERENCES PublicHealthWorker(pid),
@@ -150,12 +150,14 @@ CREATE TABLE VaccinationFacility (
 	primary key (facilityID)
 );
 
+
+
 Create table OperatingHours(
 	facilityID Integer, 
 	dayOfTheWeek Integer, 
-	openingTime Integer, 
-	closingTime Integer,
-	primary key (facilityID),
+	openingTime Time, 
+	closingTime Time,
+	primary key (facilityID,dayOfTheWeek),
 	Foreign key (facilityID) references VaccinationFacility (facilityID)
 );
 
@@ -171,6 +173,7 @@ Create table BookingSlots(
 	foreign key (facilityID) references VaccinationFacility (facilityID)
 );
 
+
 Create table Shifts(
 	pid Integer, 
 	facilityID Integer,
@@ -180,7 +183,7 @@ Create table Shifts(
 	dayOfTheWeek Integer,
 	startHour Time,
 	endHour Time,
-	primary key (facilityID, pid, SINNumber, dayOfTheWeek),
+	primary key (facilityID, pid, SINNumber),
 	Foreign key (pid, SINNumber) references PublicHealthWorker (pid, SINNumber),
 	Foreign key (facilityID) references VaccinationFacility (facilityID)
 );
