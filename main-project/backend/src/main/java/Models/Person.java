@@ -1,6 +1,7 @@
 package Models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /*
     Person class which is the parent of other user types.
@@ -20,6 +21,8 @@ public class Person implements Serializable {
 
     private String city;
     private String province;
+
+    private ArrayList<InfectionHistory> infectionHistory = new ArrayList<InfectionHistory>();
 
     public Person() {}
 
@@ -130,6 +133,13 @@ public class Person implements Serializable {
         this.province = province;
     }
 
+    public ArrayList<InfectionHistory> getInfectionHistory() {
+        return infectionHistory;
+    }
+
+    public void setInfectionHistory(ArrayList<InfectionHistory> infectionHistory) {
+        this.infectionHistory = infectionHistory;
+    }
     @Override
     public String toString() {
         return "Person{" +
