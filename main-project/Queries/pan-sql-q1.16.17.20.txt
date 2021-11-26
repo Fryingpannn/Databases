@@ -1,0 +1,45 @@
+#1. CRUD on Person
+
+# Create a person (the pid will auto increment to latest value)
+insert into Person
+values (0, "New", "D", "Person", "2000-11-29", "514-098-1928", "asldkfj", "JSD", "sdf", "sdf", "Canada", "sdf@gmail.com");
+
+# Display a Person + Infection history
+select person.*, dateOfInfection, typeOfInfection
+from Person as person
+left join InfectionHistory as hist
+on person.pid = hist.pid;
+
+# Delete a person
+delete from Person
+where pid = 9;
+
+# Edit a person
+update Person
+set firstName="ChangedName", lastName="ChangedLast"
+where pid = 10;
+
+# 16. Perform vaccine to a person with an appointment. Knowing first name, middle, last name and vaccine location.
+insert into VaccineRecord
+select 101, pid, "Square Decarie", "Canada", "2020-05-10", 1, "Moderna", "CZ-0123"
+from Person
+where firstName="Vance" and middleInitial="I" and lastName="Phillp";
+
+
+# 17. Perform vaccine to a person without an appointment. Knowing first name, middle, last name and vaccine location. Whether or not this location accepts walk-in vaccine should be checked in the backend API code prior to query.
+insert into VaccineRecord
+select 105, pid, "Square Decarie", "Canada", "2020-06-15", 1, "Moderna", "CZ-0123"
+from Person
+where firstName="Evita" and middleInitial="A" and lastName="Juris";
+
+# 20. For a given person, display bookings, history of vaccinations and history of infections
+select person.firstName, facil.name, facil.address, bookings.DayOfAppointment, bookings.timeOfAppointment, rec.VaccineType, rec.VaccineDate, rec.location, hist.dateOfInfection, hist.typeOfInfection
+from BookingSlots as bookings
+inner join Person as person
+on bookings.pID = person.pid
+inner join VaccinationFacility as facil
+on facil.facilityID = bookings.facilityID
+left join VaccineRecord as rec
+on rec.pid = person.pid
+left join InfectionHistory as hist
+on hist.pid = person.pid;
