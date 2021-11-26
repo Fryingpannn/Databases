@@ -1,0 +1,1 @@
+DELETE FROM BookingSlots WHERE pid=4;
