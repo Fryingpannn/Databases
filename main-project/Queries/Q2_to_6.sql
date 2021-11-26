@@ -103,4 +103,48 @@ SELECT * FROM InfectionHistory ih
 WHERE typeOfInfection = 'Zeta.420';
 
 
+-- Q6 Create/Delete/Edit/Display an Age Group
+
+
+-- Create an Age Group
+
+insert into AgeGroup values
+(1,80,999),
+(2,70,79),
+(3,60,69),
+(4,50,59),
+(5,40,49),
+(6,30,39),
+(7,18,29),
+(8,12,17),
+(9,5,11),
+(10,0,4);
+
+insert into Eligibility (province, groupNumber) values
+("Québec", 1),
+("Ontario", 1),
+("Nova Scotia", 1),
+("New Brunswick", 1),
+("Manitoba", 1),
+("British Columbia", 1),
+("Prince Edward Island", 1),
+("Saskatchewan", 1),
+("Newfoundland and Labrador", 1);
+
+-- Delete an Age Group
+
+
+delete FROM AgeGroup 
+WHERE groupNumber = 1;
+
+-- Edit an Age Group
+
+UPDATE table AgeGroup 
+set maxAge = 300; 
+
+
+-- Display an Age Group
+
+SELECT * FROM AgeGroup ag WHERE maxAge <= 45;
+
 
