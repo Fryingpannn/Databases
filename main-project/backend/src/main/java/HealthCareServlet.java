@@ -1,5 +1,7 @@
+import Business.DeleteHandler;
 import Business.GetHandler;
 import Business.PostHandler;
+import Business.PutHandler;
 import Data.Database;
 
 import javax.servlet.ServletException;
@@ -98,12 +100,36 @@ public class HealthCareServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        String type = getRequestType(req);
+        try {
+            switch (type) {
+                case "person":
+                    PutHandler.updatePerson(req, resp);
+                default:
+                    defaultHome(resp, true);
+            }
+        }
+        catch (Exception e) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        String type = getRequestType(req);
+        try {
+            switch (type) {
+                case "person":
+                    DeleteHandler.deletePerson(req, resp);
+                default:
+                    defaultHome(resp, true);
+            }
+        }
+        catch (Exception e) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override

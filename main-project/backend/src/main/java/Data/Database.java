@@ -6,6 +6,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import org.jboss.weld.security.AbstractReflectionAction;
 
+import javax.ws.rs.DELETE;
 import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,9 +24,13 @@ public class Database {
     private static final String SELECT_VACCINE_TYPE_QUERY = "SELECT * FROM Vaccine WHERE vaccineType = ?";
     private static final String SELECT_AGE_GROUP_QUERY = "SELECT * FROM AgeGroup WHERE groupNumber = ?";
     private static final String SELECT_BOOKING_SLOT_QUERY = "SELECT * FROM BookingSlots WHERE pid = ? AND doseNumber = ?";
-
+    private static final String SELECT_INFECTION_HISTORY_QUERY = "SELECT * FROM InfectionHistory WHERE pid = ?";
 
     private static final String CREATE_PERSON_QUERY = "insert into Person (firstName, middleInitial, lastName, dateOfBirth, phoneNumber, address, postalCode, city, provinceOrState, citizenship, email) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    private static final String UPDATE_PERSON_QUERY = "UPDATE Person SET firstName=?, middleInitial=?, lastName=?, dateOfBirth=?, phoneNumber=?, address=?, postalCode=?, city=?, provinceOrState=?, citizenship=?, email=? WHERE pid=?";
+
+    private static final String DELETE_PERSON_QUERY = "DELETE FROM Person WHERE pid = ?";
 
     /**
      * Used to interact with the DB.
@@ -94,7 +99,29 @@ public class Database {
             throw e;
         }
         statement.close();
+
+        person.setInfectionHistory(getInfectionHistory(pid));
         return person;
+    }
+
+    public synchronized ArrayList<InfectionHistory> getInfectionHistory(String pid) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(SELECT_INFECTION_HISTORY_QUERY);
+        statement.setString(1, pid);
+
+        ArrayList<InfectionHistory> hist = new ArrayList<InfectionHistory>();
+        try (ResultSet rs = statement.executeQuery()) {
+            while(rs.next()) {
+                InfectionHistory obj = setupInfectionHistory(rs);
+                hist.add(obj);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.print("ERROR RETRIEVING INFECITON HISTORY.");
+            throw e;
+        }
+        statement.close();
+        return hist;
     }
 
     public synchronized PublicHealthWorker getPublicHealthWorker(String pid) throws SQLException {
@@ -242,6 +269,30 @@ public class Database {
         statement.close();
     }
 
+    public synchronized void updatePerson(Person person) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(UPDATE_PERSON_QUERY);
+        statement.setString(1, person.getFirstName());
+        statement.setString(2, person.getMiddleInitial());
+        statement.setString(3, person.getLastName());
+        statement.setString(4, person.getDateOfBirth());
+        statement.setString(5, person.getPhoneNumber());
+        statement.setString(6, person.getAddress());
+        statement.setString(7, person.getPostalCode());
+        statement.setString(8, person.getCity());
+        statement.setString(9, person.getProvince());
+        statement.setString(10, person.getCitizenship());
+        statement.setString(11, person.getEmail());
+        statement.setString(12, person.getPid());
+        statement.executeUpdate();
+        statement.close();
+    }
+
+    public synchronized void deletePerson(String pid) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(DELETE_PERSON_QUERY);
+        statement.setString(1, pid);
+        statement.executeUpdate();
+    }
+
     /**
      * Sets up a singular person object.
      * @param rs
@@ -264,6 +315,13 @@ public class Database {
         person.setCitizenship(rs.getString(11));
         person.setEmail(rs.getString(12));
         return person;
+    }
+
+    private InfectionHistory setupInfectionHistory(ResultSet rs) throws SQLException {
+        InfectionHistory hist = new InfectionHistory();
+        hist.setDateOfInfection(rs.getString("dateOfInfection"));
+        hist.setTypeOfInfection(rs.getString("typeOfInfection"));
+        return hist;
     }
 
     private PublicHealthWorker setupPublicHealthWorker(ResultSet rsWorker, ResultSet rsPerson, PublicHealthWorker publicHealthWorker) throws SQLException {
