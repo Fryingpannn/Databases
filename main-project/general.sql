@@ -165,7 +165,7 @@ Create table OperatingHours(
 Create table BookingSlots(
 	pID Integer, 
 	facilityID Integer, 
-	typeOfAppointment Integer,
+	typeOfAppointment varchar(100),
 	DayOfAppointment Date,
 	timeOfAppointment Time,
 	DoseNumber Integer,
