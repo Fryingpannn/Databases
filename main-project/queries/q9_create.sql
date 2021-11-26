@@ -2,8 +2,8 @@ INSERT INTO BookingSlots(pID, facilityID, typeOfAppointment, DayOfAppointment, t
 VALUES (
 	4,
     1,
-    1, # Unsure what values represents
-    '2021-12-14',
+    "vaccine",
+    '2022-12-14',
 	'11:12:00',
     2
 );
