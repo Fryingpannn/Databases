@@ -13,4 +13,4 @@ CASE WHEN bslots.pid = p.pid THEN "N/A" END AS endHour,
 dayOfAppointment,
 timeOfAppointment
 FROM Person as p, PublicHealthWorker AS w, Shifts AS s, BookingSlots AS bslots
-WHERE p.pid = w.pid AND s.pid = w.pid AND s.facilityID = 1 AND bslots.pid = p.pid
+WHERE p.pid = w.pid AND s.pid = w.pid AND s.facilityID = 1 AND bslots.pid = p.pid;

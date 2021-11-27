@@ -44,5 +44,9 @@ insert into Shifts  (pid, facilityID, SINNumber, dayOfTheWeek, eID, managerID, s
 (133, 8, 113559025, 1234567, 5007, 8001, '07:00', '21:00');
 
 
+insert into Shifts  (pid, facilityID, SINNumber, dayOfTheWeek, eID, managerID, startHour, endHour) values
+(145, 1, 683832662, 134567, 1007, 1001, '07:00', '21:00'),
+(149, 1, 418884209, 134567, 1008, 1001, '07:00', '21:00'),
+(150, 1, 871902292, 134567, 1009, 1001, '07:00', '21:00');
 
 
