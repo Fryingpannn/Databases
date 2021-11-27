@@ -8,3 +8,11 @@ WHERE PublicHealthWorker.occupation = "Nurse" AND PublicHealthWorker.pid = Perso
     AND WorksAt.pid = Shifts.pid AND Shifts.SINNumber = WorksAt.SINNumber
     AND dayOfTheWeek NOT LIKE "%2%" AND VaccinationFacility.facilityID = "1"
 ORDER BY WorksAt.wage ASC;
+
+|eID |firstName|lastName    |email                   |wage|
+|----|---------|------------|------------------------|----|
+|1002|Evita    |Juris       |ejurisb@delicious.com   |45.0|
+|1003|Elysia   |Lidierth    |elidierthc@parallels.com|45.0|
+|1007|August   |Mapplethorpe|amapplethorpe40@gov.uk  |45.2|
+|1008|Roby     |Cortnay     |rcortnay44@multiply.com |45.2|
+|1009|Talbot   |Bram        |tbram45@si.edu          |45.2|
