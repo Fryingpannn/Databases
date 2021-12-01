@@ -165,11 +165,11 @@ Create table OperatingHours(
 Create table BookingSlots(
 	pID Integer, 
 	facilityID Integer, 
-	typeOfAppointment varchar(100),
+	typeOfAppointment Integer,
 	DayOfAppointment Date,
 	timeOfAppointment Time,
 	DoseNumber Integer,
-	primary key (pID, facilityID, DoseNumber),
+	primary key (facilityID, DayOfAppointment, timeOfAppointment),
 	foreign key (facilityID) references VaccinationFacility (facilityID)
 );
 
