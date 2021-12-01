@@ -26,5 +26,12 @@ public class PutHandler {
         resp.getWriter().println("<h1>Person updated successfully</h1>");
         resp.getWriter().println(new JSONObject(person));
         resp.setStatus(HttpServletResponse.SC_OK);
+        addHeaders(resp);
+    }
+
+    public static void addHeaders(HttpServletResponse resp) {
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Access-Control-Allow-Methods", "*");
+        resp.addHeader("Access-Control-Allow-Headers", "*");
     }
 }

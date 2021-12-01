@@ -25,6 +25,7 @@ public class GetHandler {
             }
             resp.getWriter().println(peopleJSON);
             resp.setStatus(HttpServletResponse.SC_OK);
+            addHeaders(resp);
         }
         // filtering a specific pid
         else {
@@ -36,6 +37,7 @@ public class GetHandler {
 
             resp.getWriter().println(new JSONObject(person));
             resp.setStatus(HttpServletResponse.SC_OK);
+            addHeaders(resp);
         }
     }
 
@@ -48,6 +50,7 @@ public class GetHandler {
 
         resp.getWriter().println(new JSONObject(publicHealthWorker));
         resp.setStatus(HttpServletResponse.SC_OK);
+        addHeaders(resp);
     }
 
     public static void getHealthFacility(HttpServletRequest req, HttpServletResponse resp) throws IncorrectParameterException, SQLException, ClassNotFoundException, IOException {
@@ -59,6 +62,7 @@ public class GetHandler {
 
         resp.getWriter().println(new JSONObject(vaccinationFacility));
         resp.setStatus(HttpServletResponse.SC_OK);
+        addHeaders(resp);
     }
 
     public static void getVaccineType(HttpServletRequest req, HttpServletResponse resp) throws IncorrectParameterException, SQLException, ClassNotFoundException, IOException {
@@ -70,6 +74,7 @@ public class GetHandler {
 
         resp.getWriter().println(new JSONObject(vaccine));
         resp.setStatus(HttpServletResponse.SC_OK);
+        addHeaders(resp);
     }
 
     public static void getAgeGroup(HttpServletRequest req, HttpServletResponse resp) throws IncorrectParameterException, SQLException, ClassNotFoundException, IOException {
@@ -81,6 +86,7 @@ public class GetHandler {
 
         resp.getWriter().println(new JSONObject(ageGroup));
         resp.setStatus(HttpServletResponse.SC_OK);
+        addHeaders(resp);
     }
 
     public static void getBookingSlot(HttpServletRequest req, HttpServletResponse resp) throws IncorrectParameterException, SQLException, ClassNotFoundException, IOException {
@@ -95,5 +101,12 @@ public class GetHandler {
 
         resp.getWriter().println(new JSONObject(bookingSlot));
         resp.setStatus(HttpServletResponse.SC_OK);
+        addHeaders(resp);
+    }
+
+    public static void addHeaders(HttpServletResponse resp) {
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Access-Control-Allow-Methods", "*");
+        resp.addHeader("Access-Control-Allow-Headers", "*");
     }
 }

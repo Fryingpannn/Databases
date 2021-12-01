@@ -22,5 +22,12 @@ public class DeleteHandler {
 
         resp.getWriter().println("<h1>Person deleted successfully</h1>");
         resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        addHeaders(resp);
+    }
+
+    public static void addHeaders(HttpServletResponse resp) {
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Access-Control-Allow-Methods", "*");
+        resp.addHeader("Access-Control-Allow-Headers", "*");
     }
 }

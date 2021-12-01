@@ -23,6 +23,7 @@ public class PostHandler {
         // return the newly created object
         resp.getWriter().println(new JSONObject(person));
         resp.setStatus(HttpServletResponse.SC_CREATED);
+        addHeaders(resp);
     }
 
     public static void postHealthWorker(HttpServletRequest req, HttpServletResponse resp) {
@@ -35,5 +36,11 @@ public class PostHandler {
 
     public static void postVaccineType(HttpServletRequest req, HttpServletResponse resp) {
 
+    }
+
+    public static void addHeaders(HttpServletResponse resp) {
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Access-Control-Allow-Methods", "*");
+        resp.addHeader("Access-Control-Allow-Headers", "*");
     }
 }
