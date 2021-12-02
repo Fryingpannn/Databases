@@ -1,11 +1,11 @@
 import { React, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import axios from 'axios';
 
-function DeletePersonForm() {
+function PersonToEditForm() {
   const [inputs, setInputs] = useState({});
+  const navigate = useNavigate()
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -13,13 +13,10 @@ function DeletePersonForm() {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     console.log(inputs);
-    await axios.delete(await axios.delete(`http://localhost:8080/person?pid=${inputs.pID}`))
-    .then((result) => {
-
-    });
+    navigate('/person/edit/pid',{state:{pID:inputs.pID}});
   };
 
   return (
@@ -47,4 +44,4 @@ function DeletePersonForm() {
   );
 }
 
-export default DeletePersonForm;
+export default PersonToEditForm;

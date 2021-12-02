@@ -18,7 +18,6 @@ public class PostHandler {
         // map JSON body to a person object and create it in the DB
         Person person = mapper.readValue(req.getReader(), Person.class);
         Database.getInstance().createPerson(person);
-        System.out.println("Created Person: " + person);
 
         // return the newly created object
         resp.getWriter().println(new JSONObject(person));
