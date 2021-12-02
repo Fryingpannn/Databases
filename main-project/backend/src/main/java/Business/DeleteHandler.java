@@ -11,9 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
 
 public class DeleteHandler {
     public static void deletePerson(HttpServletRequest req, HttpServletResponse resp) throws ClassNotFoundException, SQLException, IOException, IncorrectParameterException {
+        System.out.println("Got to delete Person");
         String pid = req.getParameter("pid");
         if (pid == null) {
             throw new IncorrectParameterException("Missing \"pid\" parameter.");

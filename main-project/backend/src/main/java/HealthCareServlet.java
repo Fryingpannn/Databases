@@ -34,6 +34,7 @@ public class HealthCareServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String type = getRequestType(req);
+        doOptions(req, resp);
         try {
             switch (type) {
                 case "/":
@@ -72,6 +73,7 @@ public class HealthCareServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String type = getRequestType(req);
+        doOptions(req, resp);
         try {
             switch (type) {
                 case "/":
@@ -101,6 +103,7 @@ public class HealthCareServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String type = getRequestType(req);
+        doOptions(req, resp);
         try {
             switch (type) {
                 case "person":
@@ -118,6 +121,7 @@ public class HealthCareServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String type = getRequestType(req);
+        doOptions(req, resp);
         try {
             switch (type) {
                 case "person":

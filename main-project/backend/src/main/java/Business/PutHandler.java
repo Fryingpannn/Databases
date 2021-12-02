@@ -18,6 +18,7 @@ public class PutHandler {
 
     public static void updatePerson(HttpServletRequest req, HttpServletResponse resp) throws ClassNotFoundException, SQLException, IOException, IncorrectParameterException {
         // map JSON body to a person object and create it in the DB
+
         Person person = mapper.readValue(req.getReader(), Person.class);
         Database.getInstance().updatePerson(person);
         System.out.println("Updated Person: " + person);
