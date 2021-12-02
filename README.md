@@ -10,6 +10,7 @@ Fall 2021
 - `npm install`
 - `npm start`
 ## Running Back-end
+- Set credentials in config.
 - Run local Tomcat Server in IntelliJ.
 ## Running Database
 - Run remote MySQL Server on workbench.
